@@ -40,17 +40,17 @@
 #    define USB_POWER_SENSE_PIN B1
 #    define USB_POWER_CONNECTED_LEVEL 0
 
-#    define HOST_DEVICES_COUNT 3
+#    define HOST_DEVICES_COUNT 6
 
 #    if defined(RGB_MATRIX_ENABLE)
 
 #        define LED_DRIVER_SHUTDOWN_PIN C14
 
 #        define HOST_LED_MATRIX_LIST \
-            { 15, 16, 17 }
+            { 7, 8, 9, 10, 11, 12 }
 
 #        define BAT_LEVEL_LED_LIST \
-            { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }
+            { 42, 43, 44, 45, 46, 47, 48, 49, 50, 51 }
 
 /* Backlit disable timeout when keyboard is disconnected(unit: second) */
 #        define DISCONNECTED_BACKLIGHT_DISABLE_TIMEOUT 40

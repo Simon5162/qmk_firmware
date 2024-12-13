@@ -107,7 +107,7 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             }
             return false; // Skip all further processing of this key
 #ifdef KC_BLUETOOTH_ENABLE
-        case BT_HST1 ... BT_HST3:
+        case BT_HST1 ... BT_HST6:
             if (get_transport() == TRANSPORT_BLUETOOTH) {
                 if (record->event.pressed) {
                     host_idx = keycode - BT_HST1 + 1;
