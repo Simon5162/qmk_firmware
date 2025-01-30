@@ -1363,16 +1363,20 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
             }
         case MA_HOME:
             if (record->event.pressed) {
+                register_code16(KC_LGUI);
                 register_code16(KC_LSFT);
                 tap_code16(KC_LEFT);
                 unregister_code16(KC_LSFT);
+                unregister_code16(KC_LGUI);
             }
             return false;
         case MA_END:
             if (record->event.pressed) {
+                register_code16(KC_LGUI);
                 register_code16(KC_LSFT);
                 tap_code16(KC_RIGHT);
                 unregister_code16(KC_LSFT);
+                unregister_code16(KC_LGUI);
             }
             return false;
         default:
