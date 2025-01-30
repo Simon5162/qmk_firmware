@@ -40,6 +40,8 @@ enum custom_keycodes {
     MA_MS_WH_DOWN,
     MA_MS_BTN1_TAP,
     MA_MS_BTN2_TAP,
+    MA_HOME,
+    MA_END,
 //    MA_CAPSE,
 //    MA_CAPSU,
 //    MA_CAPSI,
