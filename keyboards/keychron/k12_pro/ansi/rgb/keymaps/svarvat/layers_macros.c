@@ -705,6 +705,26 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 return false;
             }
             return true;
+        case KC_HOME:
+            if (record->event.pressed) {
+                if ((get_mods() & MOD_BIT(KC_LGUI)) == MOD_BIT(KC_LGUI)) {
+                    register_code16(KC_LSFT);
+                    tap_code16(KC_LEFT);
+                    unregister_code16(KC_LSFT);
+                    return false;
+                }
+            }
+            return true;
+        case KC_END:
+            if (record->event.pressed) {
+                if ((get_mods() & MOD_BIT(KC_LGUI)) == MOD_BIT(KC_LGUI)) {
+                    register_code16(KC_LSFT);
+                    tap_code16(KC_RIGHT);
+                    unregister_code16(KC_LSFT);
+                    return false;
+                }
+            }
+            return true;
         default:
             return true;
     }
