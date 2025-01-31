@@ -865,6 +865,7 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
                 isCtlTabStarted = true;
                 register_mods(MOD_MASK_CTRL);
                 tap_code16(KC_TAB);
+                return false;
             }
             return true;
     }
