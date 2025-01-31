@@ -78,6 +78,9 @@ bool switch_ctl_tab_off(uint16_t keycode) {
     && (keycode != KC_DOWN)
     && (keycode != KC_LEFT)
     && (keycode != KC_RIGHT)
+    && (keycode != KC_HOME)
+    && (keycode != KC_END)
+    && (keycode != C(KC_Z))
     && (keycode != MA_LTHUMBD)
     && (keycode != MA_LTHUMBE)
     && (keycode != KC_LSFT)) {
@@ -694,6 +697,22 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 register_code16(KC_LCTL);
                 tap_code16(KC_DEL);
                 unregister_code16(KC_LCTL);
+                return false;
+            }
+            return true;
+        case KC_HOME:
+            if (isCtlTabStarted && record->event.pressed) {
+                register_code16(KC_LSFT);
+                tap_code16(KC_PGUP);
+                unregister_code16(KC_LSFT);
+                return false;
+            }
+            return true;
+        case KC_END:
+            if (isCtlTabStarted && record->event.pressed) {
+                register_code16(KC_LSFT);
+                tap_code16(KC_PGDN);
+                unregister_code16(KC_LSFT);
                 return false;
             }
             return true;
