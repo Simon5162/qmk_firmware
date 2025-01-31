@@ -80,6 +80,8 @@ bool switch_ctl_tab_off(uint16_t keycode) {
     && (keycode != KC_RIGHT)
     && (keycode != KC_HOME)
     && (keycode != KC_END)
+    && (keycode != KC_MS_BTN4)
+    && (keycode != KC_MS_BTN5)
     && (keycode != C(KC_Z))
     && (keycode != MA_LTHUMBD)
     && (keycode != MA_LTHUMBE)
@@ -107,6 +109,7 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
     && (keycode != S(KC_J))
     && (keycode != S(KC_K))
     && (keycode != S(KC_L))
+    && (keycode != KC_A)
     && (keycode != KC_LSFT)) {
         isAltTabStarted = false;
         unregister_code16(KC_LALT);
@@ -222,6 +225,14 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
                     unregister_code16(KC_LSFT);
                     tap_code16(KC_TAB);
                     register_code16(KC_LSFT);
+                    return false;
+                }
+            }
+            return true;
+        case KC_A:
+            if (record->event.pressed) {
+                if (isAltTabStarted) {
+                    tap_code16(KC_DEL);
                     return false;
                 }
             }
@@ -486,16 +497,6 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                 }
             } else {
                 mouseRight = false;
-            }
-            return false;
-        case KC_END:
-            if (record->event.pressed) {
-                tap_code16(KC_MS_BTN5);
-            }
-            return false;
-        case KC_HOME:
-            if (record->event.pressed) {
-                tap_code16(KC_MS_BTN4);
             }
             return false;
         default:
@@ -815,11 +816,20 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
                 }
             }
             return false;
-        case KC_TAB:
-            if (!isCtlTabStarted && record->event.pressed) {
-                isCtlTabStarted = true;
-                register_mods(MOD_MASK_CTRL);
-                tap_code16(KC_TAB);
+        case KC_MS_BTN4:
+            if (isCtlTabStarted && record->event.pressed) {
+                register_code16(KC_LSFT);
+                tap_code16(KC_PGUP);
+                unregister_code16(KC_LSFT);
+                return false;
+            }
+            return true;
+        case KC_MS_BTN5:
+            if (isCtlTabStarted && record->event.pressed) {
+                register_code16(KC_LSFT);
+                tap_code16(KC_PGDN);
+                unregister_code16(KC_LSFT);
+                return false;
             }
             return true;
         case KC_UP:
@@ -848,6 +858,13 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
             if (isCtlTabStarted && record->event.pressed) {
                 tap_code16(KC_TAB);
                 return false;
+            }
+            return true;
+        case KC_TAB:
+            if (!isCtlTabStarted && record->event.pressed) {
+                isCtlTabStarted = true;
+                register_mods(MOD_MASK_CTRL);
+                tap_code16(KC_TAB);
             }
             return true;
     }
@@ -1475,4 +1492,5 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
             return true;
     }
 }
+
 
