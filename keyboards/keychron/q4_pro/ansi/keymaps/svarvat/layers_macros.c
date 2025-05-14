@@ -80,6 +80,7 @@ bool switch_ctl_tab_off(uint16_t keycode) {
     && (keycode != KC_RIGHT)
     && (keycode != KC_HOME)
     && (keycode != KC_END)
+    && (keycode != KC_DEL)
     && (keycode != KC_MS_BTN4)
     && (keycode != KC_MS_BTN5)
     && (keycode != C(KC_Z))
@@ -105,11 +106,12 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
     && (keycode != KC_J)
     && (keycode != KC_K)
     && (keycode != KC_L)
-    && (keycode != S(KC_I))
-    && (keycode != S(KC_J))
-    && (keycode != S(KC_K))
-    && (keycode != S(KC_L))
     && (keycode != KC_A)
+    && (keycode != KC_SCLN)
+    && (keycode != KC_U)
+    && (keycode != KC_O)
+    && (keycode != KC_D)
+    && (keycode != KC_E)
     && (keycode != KC_LSFT)) {
         isAltTabStarted = false;
         unregister_code16(KC_LALT);
@@ -124,11 +126,7 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
     && (keycode != KC_I)
     && (keycode != KC_J)
     && (keycode != KC_K)
-    && (keycode != KC_L)
-    && (keycode != S(KC_I))
-    && (keycode != S(KC_J))
-    && (keycode != S(KC_K))
-    && (keycode != S(KC_L))) {
+    && (keycode != KC_L)) {
         isSftTabStarted = false;
         unregister_code16(KC_LSFT);
         if ((keycode == KC_ENT)
@@ -178,6 +176,20 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
                     isCapswordStarted = true;
                     layer_on(LA_CAPSLOCK);
                     return false;
+                }
+            }
+            return true;
+        case KC_D:
+            if (record->event.pressed) {
+                if (isAltTabStarted) {
+                    layer_on(LA_LTHUMBDMO);
+                }
+            }
+            return true;
+        case KC_E:
+            if (record->event.pressed) {
+                if (isAltTabStarted) {
+                    layer_on(LA_LTHUMBEMO);
                 }
             }
             return true;
@@ -231,8 +243,32 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
             return true;
         case KC_A:
             if (record->event.pressed) {
+            if (isAltTabStarted) {
+                    tap_code16(KC_DEL);
+                    return false;
+                }
+            }
+            return true;
+        case KC_SCLN:
+            if (record->event.pressed) {
                 if (isAltTabStarted) {
                     tap_code16(KC_DEL);
+                    return false;
+                }
+            }
+            return true;
+        case KC_U:
+            if (record->event.pressed) {
+                if (isAltTabStarted) {
+                    tap_code16(KC_HOME);
+                    return false;
+                }
+            }
+            return true;
+        case KC_O:
+            if (record->event.pressed) {
+                if (isAltTabStarted) {
+                    tap_code16(KC_END);
                     return false;
                 }
             }
@@ -874,6 +910,7 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
 bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case MA_LTHUMBE:
+        case KC_E:
             if (!(record->event.pressed)) {
                 layer_off_mo_layer(LA_LTHUMBEMO);
             }
@@ -990,6 +1027,7 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
 bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case MA_LTHUMBD:
+        case KC_D:
             if (!(record->event.pressed)) {
                 layer_off_mo_layer(LA_LTHUMBDMO);
             }

@@ -3,7 +3,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 //        set_scrolling = !set_scrolling;
 //    }
 
-    if (IS_LAYER_ON(LA_LTHUMB) || IS_LAYER_ON(LA_LTHUMBMS)) {
+    if (IS_LAYER_ON(LA_LTHUMB) || IS_LAYER_ON(LA_LTHUMBMS) || isAltTabStarted) {
         if (IS_LAYER_ON(LA_LTHUMBEMO)) {
             if (!processKeycodeIfLThumbEMo(keycode, record)) {return false;}
         }
