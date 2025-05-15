@@ -64,7 +64,7 @@ void layer_off_weak_layer(uint16_t layer) {
     layer_off(layer);
 }
 void reverse_weak_layer(bool isLThumbMoPristine) {
-    if (isLThumbMoPristine && (inMemoryPreviousWeakLayer != 0)) {
+    if (isLThumbMoPristine && (inMemoryPreviousWeakLayer != 0 && !isAltTabStarted)) {
         layer_off(inMemoryCurrentWeakLayer);
         layer_on(inMemoryPreviousWeakLayer);
         isLThumbMoPristine = false;
@@ -108,10 +108,16 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
     && (keycode != KC_L)
     && (keycode != KC_A)
     && (keycode != KC_SCLN)
-    && (keycode != KC_U)
-    && (keycode != KC_O)
     && (keycode != KC_D)
     && (keycode != KC_E)
+    && (keycode != MA_RIGHTX4)
+    && (keycode != MA_LEFTX4)
+    && (keycode != MA_DOWNX4)
+    && (keycode != MA_UPX4)
+    && (keycode != MA_RIGHTX2)
+    && (keycode != MA_LEFTX2)
+    && (keycode != MA_DOWNX2)
+    && (keycode != MA_UPX2)
     && (keycode != KC_LSFT)) {
         isAltTabStarted = false;
         unregister_code16(KC_LALT);
@@ -255,22 +261,6 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isAltTabStarted) {
                     tap_code16(KC_DEL);
-                    return false;
-                }
-            }
-            return true;
-        case KC_U:
-            if (record->event.pressed) {
-                if (isAltTabStarted) {
-                    tap_code16(KC_HOME);
-                    return false;
-                }
-            }
-            return true;
-        case KC_O:
-            if (record->event.pressed) {
-                if (isAltTabStarted) {
-                    tap_code16(KC_END);
                     return false;
                 }
             }
