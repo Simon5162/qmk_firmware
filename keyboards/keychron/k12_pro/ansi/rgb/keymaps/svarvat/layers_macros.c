@@ -183,6 +183,7 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isAltTabStarted) {
                     layer_on(LA_LTHUMBDMO);
+                    return false;
                 }
             }
             return true;
@@ -190,6 +191,7 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isAltTabStarted) {
                     layer_on(LA_LTHUMBEMO);
+                    return false;
                 }
             }
             return true;
@@ -479,7 +481,7 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                 scrollUp = false;
             }
             return false;
-        case KC_DOWN:
+        case MA_MS_DOWN:
             if (record->event.pressed) {
                 if (isAltTabStarted) {
                     tap_code16(KC_DOWN);
@@ -494,7 +496,7 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                 mouseDown = false;
             }
             return false;
-        case KC_UP:
+        case MA_MS_UP:
             if (record->event.pressed) {
                 if (isAltTabStarted) {
                     tap_code16(KC_UP);
@@ -507,7 +509,7 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                 mouseUp = false;
             }
             return false;
-        case KC_LEFT:
+        case MA_MS_LEFT:
             if (record->event.pressed) {
                 if (isAltTabStarted) {
                     tap_code16(KC_LEFT);
@@ -520,7 +522,7 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                 mouseLeft = false;
             }
             return false;
-        case KC_RIGHT:
+        case MA_MS_RIGHT:
             if (record->event.pressed) {
                 if (isAltTabStarted) {
                     tap_code16(KC_RIGHT);
