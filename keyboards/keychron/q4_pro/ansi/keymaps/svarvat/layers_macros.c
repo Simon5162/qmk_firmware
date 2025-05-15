@@ -98,7 +98,6 @@ bool switch_ctl_tab_off(uint16_t keycode) {
     return true;
 }
 
-
 bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
     if (isAltTabStarted
     && (keycode != KC_TAB)
@@ -1428,24 +1427,6 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
                 }
                 return true;
             }
-        case MA_HOME:
-            if (record->event.pressed) {
-                register_code16(KC_LGUI);
-                register_code16(KC_LSFT);
-                tap_code16(KC_LEFT);
-                unregister_code16(KC_LSFT);
-                unregister_code16(KC_LGUI);
-            }
-            return false;
-        case MA_END:
-            if (record->event.pressed) {
-                register_code16(KC_LGUI);
-                register_code16(KC_LSFT);
-                tap_code16(KC_RIGHT);
-                unregister_code16(KC_LSFT);
-                unregister_code16(KC_LGUI);
-            }
-            return false;
         default:
             isLThumbWeakPristine = false;
             return true;
@@ -1512,6 +1493,24 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
             }
             layer_off(LA_LTHUMBDSTRONG);
             return true;
+        case MA_WIN_LEFT:
+            if (record->event.pressed) {
+                register_code16(KC_LGUI);
+                register_code16(KC_LSFT);
+                tap_code16(KC_LEFT);
+                unregister_code16(KC_LSFT);
+                unregister_code16(KC_LGUI);
+            }
+            return false;
+        case MA_WIN_RIGHT:
+            if (record->event.pressed) {
+                register_code16(KC_LGUI);
+                register_code16(KC_LSFT);
+                tap_code16(KC_RIGHT);
+                unregister_code16(KC_LSFT);
+                unregister_code16(KC_LGUI);
+            }
+            return false;
         default:
             if (!(record->event.pressed)) {
                 if (editModeLThumbStrongStarted) {

@@ -46,6 +46,8 @@ enum custom_keycodes {
     MA_MS_DOWN,
     MA_HOME,
     MA_END,
+    MA_WIN_LEFT,
+    MA_WIN_RIGHT,
 //    MA_CAPSE,
 //    MA_CAPSU,
 //    MA_CAPSI,
