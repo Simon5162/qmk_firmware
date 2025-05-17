@@ -578,14 +578,18 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             return false;
         case MA_LTHUMBD:
             if (record->event.pressed) {
+                if (!isAltTabStarted && !isSftTabStarted) {
+                    layer_on_weak_layer(LA_LTHUMBDWEAK);
+                }
                 layer_on(LA_LTHUMBDMO);
-                layer_on_weak_layer(LA_LTHUMBDWEAK);
             }
             return false;
         case MA_LTHUMBE:
             if (record->event.pressed) {
+                if (!isAltTabStarted && !isSftTabStarted) {
+                    layer_on_weak_layer(LA_LTHUMBEWEAK);
+                }
                 layer_on(LA_LTHUMBEMO);
-                layer_on_weak_layer(LA_LTHUMBEWEAK);
             }
             return false;
         case MA_LTHUMB1:
@@ -858,7 +862,6 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
 bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case MA_LTHUMBE:
-        case KC_E:
             if (!(record->event.pressed)) {
                 layer_off_mo_layer(LA_LTHUMBEMO);
             }
