@@ -2,7 +2,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 //    if (keycode == DRAG_SCROLL && record->event.pressed) {
 //        set_scrolling = !set_scrolling;
 //    }
-
+    if (isMuteKeysEnabled) {
+        if (!processKeycodeIfMuteKeysEnabled(keycode, record)) {return false;}
+    }
     if (IS_LAYER_ON(LA_LTHUMB) || IS_LAYER_ON(LA_LTHUMBMS) || isAltTabStarted) {
         if (IS_LAYER_ON(LA_LTHUMBEMO)) {
             if (!processKeycodeIfLThumbEMo(keycode, record)) {return false;}

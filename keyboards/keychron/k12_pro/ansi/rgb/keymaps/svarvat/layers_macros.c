@@ -19,6 +19,7 @@ bool scrollDown = false;
 bool isScrollX1Started = false;
 bool isScrollX2Started = false;
 bool isScrollX4Started = false;
+bool isMuteKeysEnabled = false;
 bool isWeakLaMouseStarted = false;
 bool isLThumbMoPristine = true;
 bool isLThumbWeakPristine = true;
@@ -170,6 +171,19 @@ bool switch_sht_tab_off(uint16_t keycode) {
     return true;
 }
 
+bool processKeycodeIfMuteKeysEnabled(uint16_t keycode, keyrecord_t* record) {
+    switch (keycode) {
+        case MA_MUTE_KEYS:
+            if (record->event.pressed && IS_LAYER_ON(LA_LPINKY)) {
+                isMuteKeysEnabled = false;
+            }
+            return false;
+        case MA_LPINKY:
+            return true ;
+        default:
+            return false;
+    }
+}
 bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case MA_LTHUMB:
@@ -516,6 +530,12 @@ bool processKeycodeIfLPinky(uint16_t keycode, keyrecord_t* record) {
                     tap_code16(KC_TAB);
                     tap_code16(KC_DOWN);
                 }
+            }
+            return false;
+        case MA_MUTE_KEYS:
+            if (record->event.pressed) {
+                isMuteKeysEnabled = true;
+                layer_off(LA_LPINKY);
             }
             return false;
         case KC_UP:

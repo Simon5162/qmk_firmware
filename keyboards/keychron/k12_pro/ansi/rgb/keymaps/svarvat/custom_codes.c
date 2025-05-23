@@ -48,6 +48,7 @@ enum custom_keycodes {
     MA_END,
     MA_WIN_LEFT,
     MA_WIN_RIGHT,
+    MA_MUTE_KEYS,
 //    MA_CAPSE,
 //    MA_CAPSU,
 //    MA_CAPSI,
