@@ -657,6 +657,12 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
                 tap_code16(KC_LEFT);
                 unregister_code16(KC_LSFT);
                 unregister_code16(KC_LGUI);
+            } else {
+                if (editModeLThumbStrongStarted) {
+                    unregister_mods(MOD_MASK_CTRL);
+                    editModeLThumbStrongStarted = false;
+                }
+                layer_off(LA_LTHUMBDSTRONG);
             }
             return false;
         case MA_WIN_RIGHT:
@@ -666,6 +672,12 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
                 tap_code16(KC_RIGHT);
                 unregister_code16(KC_LSFT);
                 unregister_code16(KC_LGUI);
+            } else {
+                if (editModeLThumbStrongStarted) {
+                    unregister_mods(MOD_MASK_CTRL);
+                    editModeLThumbStrongStarted = false;
+                }
+                layer_off(LA_LTHUMBDSTRONG);
             }
             return false;
         default:
