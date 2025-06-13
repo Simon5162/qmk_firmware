@@ -575,14 +575,12 @@ bool processKeycodeIfRThumb(uint16_t keycode, keyrecord_t* record) {
         case MA_BACKTICK:
             if (record->event.pressed) {
                 tap_code16(FR_GRV);
-                // timer = timer_read();
                 tap_code16(KC_SPC);
             }
             return false;
         case MA_TILD:
             if (record->event.pressed) {
                 tap_code16(FR_TILD);
-                tap_code16(KC_SPC);
             }
             return false;
         default:
