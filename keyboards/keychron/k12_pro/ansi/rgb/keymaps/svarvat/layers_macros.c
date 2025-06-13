@@ -650,36 +650,6 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
             }
             layer_off(LA_LTHUMBDSTRONG);
             return true;
-        case MA_WIN_LEFT:
-            if (record->event.pressed) {
-                register_code16(KC_LGUI);
-                register_code16(KC_LSFT);
-                tap_code16(KC_LEFT);
-                unregister_code16(KC_LSFT);
-                unregister_code16(KC_LGUI);
-            } else {
-                if (editModeLThumbStrongStarted) {
-                    unregister_mods(MOD_MASK_CTRL);
-                    editModeLThumbStrongStarted = false;
-                }
-                layer_off(LA_LTHUMBDSTRONG);
-            }
-            return false;
-        case MA_WIN_RIGHT:
-            if (record->event.pressed) {
-                register_code16(KC_LGUI);
-                register_code16(KC_LSFT);
-                tap_code16(KC_RIGHT);
-                unregister_code16(KC_LSFT);
-                unregister_code16(KC_LGUI);
-            } else {
-                if (editModeLThumbStrongStarted) {
-                    unregister_mods(MOD_MASK_CTRL);
-                    editModeLThumbStrongStarted = false;
-                }
-                layer_off(LA_LTHUMBDSTRONG);
-            }
-            return false;
         default:
             if (!(record->event.pressed)) {
                 if (editModeLThumbStrongStarted) {
@@ -1403,6 +1373,36 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
                 layer_off_weak_layer(LA_LTHUMBDWEAK);
             }
             return true;
+        case MA_WIN_LEFT:
+            if (record->event.pressed) {
+                register_code16(KC_LGUI);
+                register_code16(KC_LSFT);
+                tap_code16(KC_LEFT);
+                unregister_code16(KC_LSFT);
+                unregister_code16(KC_LGUI);
+            } else {
+                if (editModeLThumbStrongStarted) {
+                    unregister_mods(MOD_MASK_CTRL);
+                    editModeLThumbStrongStarted = false;
+                }
+                layer_off(LA_LTHUMBDSTRONG);
+            }
+            return false;
+        case MA_WIN_RIGHT:
+            if (record->event.pressed) {
+                register_code16(KC_LGUI);
+                register_code16(KC_LSFT);
+                tap_code16(KC_RIGHT);
+                unregister_code16(KC_LSFT);
+                unregister_code16(KC_LGUI);
+            } else {
+                if (editModeLThumbStrongStarted) {
+                    unregister_mods(MOD_MASK_CTRL);
+                    editModeLThumbStrongStarted = false;
+                }
+                layer_off(LA_LTHUMBDSTRONG);
+            }
+            return false;
         default:
             isLThumbWeakPristine = false;
             return true;
