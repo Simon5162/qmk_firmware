@@ -134,6 +134,7 @@ bool switch_alt_tab_off(uint16_t keycode) {
     && (keycode != MA_UPX2)
     && (keycode != KC_LSFT)) {
         isAltTabStarted = false;
+        isLThumbWeakPristine = true;
         unregister_code16(KC_LALT);
         layer_off(LA_LTHUMB);
         layer_off_mo_layer(LA_LTHUMBDMO);
@@ -165,6 +166,7 @@ bool switch_sht_tab_off(uint16_t keycode) {
     && (keycode != MA_UPX2)) {
         isSftTabStarted = false;
         isSftTabPristine = true;
+        isLThumbWeakPristine = true;
         unregister_code16(KC_LSFT);
         layer_off(LA_LTHUMB);
         layer_off_mo_layer(LA_LTHUMBDMO);
