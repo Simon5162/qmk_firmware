@@ -575,7 +575,6 @@ bool processKeycodeIfRThumb(uint16_t keycode, keyrecord_t* record) {
         case MA_BACKTICK:
             if (record->event.pressed) {
                 tap_code16(FR_GRV);
-                tap_code16(KC_SPC);
             }
             return false;
         case MA_TILD:
@@ -1378,12 +1377,7 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
                 tap_code16(KC_LEFT);
                 unregister_code16(KC_LSFT);
                 unregister_code16(KC_LGUI);
-            } else {
-                if (editModeLThumbStrongStarted) {
-                    unregister_mods(MOD_MASK_CTRL);
-                    editModeLThumbStrongStarted = false;
-                }
-                layer_off(LA_LTHUMBDSTRONG);
+                isLThumbWeakPristine = false;
             }
             return false;
         case MA_WIN_RIGHT:
@@ -1393,12 +1387,7 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
                 tap_code16(KC_RIGHT);
                 unregister_code16(KC_LSFT);
                 unregister_code16(KC_LGUI);
-            } else {
-                if (editModeLThumbStrongStarted) {
-                    unregister_mods(MOD_MASK_CTRL);
-                    editModeLThumbStrongStarted = false;
-                }
-                layer_off(LA_LTHUMBDSTRONG);
+                isLThumbWeakPristine = false;
             }
             return false;
         default:
