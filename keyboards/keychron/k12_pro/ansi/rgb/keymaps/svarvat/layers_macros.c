@@ -235,10 +235,10 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
             return true;
         case KC_TAB:
             if (record->event.pressed) {
-                if ((get_mods() & MOD_BIT(KC_LALT)) == MOD_BIT(KC_LALT) && !isAltTabStarted) {
+                if ((get_mods() & MOD_BIT(KC_LALT)) == MOD_BIT(KC_LALT) && !isAltTabStarted && !isSftTabStarted && !isCtlTabStarted) {
                     isAltTabStarted = true;
                     layer_on(LA_LTHUMB);
-                } else if ((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT) && !isSftTabStarted) {
+                } else if ((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT) && !isSftTabStarted && !isAltTabStarted && !isCtlTabStarted) {
                     isSftTabStarted = true;
                     layer_on(LA_LTHUMB);
                 }
