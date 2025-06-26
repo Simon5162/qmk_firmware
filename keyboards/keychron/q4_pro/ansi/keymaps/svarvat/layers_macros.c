@@ -134,6 +134,7 @@ bool switch_alt_tab_off(uint16_t keycode) {
     && (keycode != MA_UPX2)
     && (keycode != KC_LSFT)) {
         isAltTabStarted = false;
+        isLThumbWeakPristine = true;
         unregister_code16(KC_LALT);
         layer_off(LA_LTHUMB);
         layer_off_mo_layer(LA_LTHUMBDMO);
@@ -165,6 +166,7 @@ bool switch_sht_tab_off(uint16_t keycode) {
     && (keycode != MA_UPX2)) {
         isSftTabStarted = false;
         isSftTabPristine = true;
+        isLThumbWeakPristine = true;
         unregister_code16(KC_LSFT);
         layer_off(LA_LTHUMB);
         layer_off_mo_layer(LA_LTHUMBDMO);
@@ -233,10 +235,10 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
             return true;
         case KC_TAB:
             if (record->event.pressed) {
-                if ((get_mods() & MOD_BIT(KC_LALT)) == MOD_BIT(KC_LALT) && !isAltTabStarted) {
+                if ((get_mods() & MOD_BIT(KC_LALT)) == MOD_BIT(KC_LALT) && !isAltTabStarted && !isSftTabStarted && !isCtlTabStarted) {
                     isAltTabStarted = true;
                     layer_on(LA_LTHUMB);
-                } else if ((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT) && !isSftTabStarted) {
+                } else if ((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT) && !isSftTabStarted && !isAltTabStarted && !isCtlTabStarted) {
                     isSftTabStarted = true;
                     layer_on(LA_LTHUMB);
                 }
@@ -575,14 +577,11 @@ bool processKeycodeIfRThumb(uint16_t keycode, keyrecord_t* record) {
         case MA_BACKTICK:
             if (record->event.pressed) {
                 tap_code16(FR_GRV);
-                // timer = timer_read();
-                tap_code16(KC_SPC);
             }
             return false;
         case MA_TILD:
             if (record->event.pressed) {
                 tap_code16(FR_TILD);
-                tap_code16(KC_SPC);
             }
             return false;
         default:
@@ -650,36 +649,6 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
             }
             layer_off(LA_LTHUMBDSTRONG);
             return true;
-        case MA_WIN_LEFT:
-            if (record->event.pressed) {
-                register_code16(KC_LGUI);
-                register_code16(KC_LSFT);
-                tap_code16(KC_LEFT);
-                unregister_code16(KC_LSFT);
-                unregister_code16(KC_LGUI);
-            } else {
-                if (editModeLThumbStrongStarted) {
-                    unregister_mods(MOD_MASK_CTRL);
-                    editModeLThumbStrongStarted = false;
-                }
-                layer_off(LA_LTHUMBDSTRONG);
-            }
-            return false;
-        case MA_WIN_RIGHT:
-            if (record->event.pressed) {
-                register_code16(KC_LGUI);
-                register_code16(KC_LSFT);
-                tap_code16(KC_RIGHT);
-                unregister_code16(KC_LSFT);
-                unregister_code16(KC_LGUI);
-            } else {
-                if (editModeLThumbStrongStarted) {
-                    unregister_mods(MOD_MASK_CTRL);
-                    editModeLThumbStrongStarted = false;
-                }
-                layer_off(LA_LTHUMBDSTRONG);
-            }
-            return false;
         default:
             if (!(record->event.pressed)) {
                 if (editModeLThumbStrongStarted) {
@@ -1403,6 +1372,26 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
                 layer_off_weak_layer(LA_LTHUMBDWEAK);
             }
             return true;
+        case MA_WIN_LEFT:
+            if (record->event.pressed) {
+                register_code16(KC_LGUI);
+                register_code16(KC_LSFT);
+                tap_code16(KC_LEFT);
+                unregister_code16(KC_LSFT);
+                unregister_code16(KC_LGUI);
+                isLThumbWeakPristine = false;
+            }
+            return false;
+        case MA_WIN_RIGHT:
+            if (record->event.pressed) {
+                register_code16(KC_LGUI);
+                register_code16(KC_LSFT);
+                tap_code16(KC_RIGHT);
+                unregister_code16(KC_LSFT);
+                unregister_code16(KC_LGUI);
+                isLThumbWeakPristine = false;
+            }
+            return false;
         default:
             isLThumbWeakPristine = false;
             return true;
