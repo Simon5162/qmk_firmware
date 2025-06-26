@@ -21,6 +21,7 @@ bool isScrollX2Started = false;
 bool isScrollX4Started = false;
 bool isMuteKeysEnabled = false;
 bool isWeakLaMouseStarted = false;
+bool isMouseBtn1HoldStarted = false;
 bool isLThumbMoPristine = true;
 bool isLThumbWeakPristine = true;
 bool isSftTabPristine = true;
@@ -419,6 +420,10 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
             return false;
         case MA_MS_BTN1_TAP:
             if (record->event.pressed) {
+                if (isMouseBtn1HoldStarted) {
+                    unregister_code16(KC_MS_BTN1);
+                    isMouseBtn1HoldStarted = false;
+                }
                 tap_code16(KC_MS_BTN1);
             }
             return false;
@@ -492,6 +497,19 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                     register_code16(KC_LSFT);
                 } else {
                     mouseRight = true;
+                }
+            } else {
+                mouseRight = false;
+            }
+            return false;
+        case MA_MS_BTN1_HOLD:
+            if (record->event.pressed) {
+                if (isMouseBtn1HoldStarted) {
+                    unregister_code16(KC_MS_BTN1);
+                    isMouseBtn1HoldStarted = false;
+                } else {
+                    register_code16(KC_MS_BTN1);
+                    isMouseBtn1HoldStarted = true;
                 }
             } else {
                 mouseRight = false;

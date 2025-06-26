@@ -49,6 +49,7 @@ enum custom_keycodes {
     MA_WIN_LEFT,
     MA_WIN_RIGHT,
     MA_MUTE_KEYS,
+    MA_MS_BTN1_HOLD,
 //    MA_CAPSE,
 //    MA_CAPSU,
 //    MA_CAPSI,
