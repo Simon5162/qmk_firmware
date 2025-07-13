@@ -52,6 +52,10 @@ void layer_off_lmouse(void) {
     mouseUp = false;
     mouseRight = false;
     mouseLeft = false;
+    if (isMouseBtn1HoldStarted) {
+        unregister_code16(KC_MS_BTN1);
+        isMouseBtn1HoldStarted = false;
+    }
 }
 void layer_off_mo_layer(uint16_t layer) {
     isLThumbMoPristine = true;
