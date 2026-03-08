@@ -1066,7 +1066,7 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(C(A(KC_MINS)));
+                    tap_code16(C(A(KC_F8)));
                 }
                 return false;
             } else {
@@ -1079,7 +1079,7 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(C(A(KC_EQL)));
+                    tap_code16(C(A(KC_F9)));
                 }
                 return false;
             } else {
@@ -1145,7 +1145,7 @@ bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(RCS(KC_MINS));
+                    tap_code16(RCS(KC_F8));
                 }
                 return false;
             } else {
@@ -1158,7 +1158,7 @@ bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(RCS(KC_EQL));
+                    tap_code16(RCS(KC_F9));
                 }
                 return false;
             } else {
@@ -1224,7 +1224,7 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(LALT(KC_MINS));
+                    tap_code16(LALT(KC_F8));
                 }
                 return false;
             } else {
@@ -1237,7 +1237,7 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(LALT(KC_EQL));
+                    tap_code16(LALT(KC_F9));
                 }
                 return false;
             } else {
