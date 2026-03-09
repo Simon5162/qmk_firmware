@@ -1066,7 +1066,7 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(C(A(KC_5)));
+                    tap_code16(C(A(KC_Y)));
                 }
                 return false;
             } else {
@@ -1079,7 +1079,7 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(C(A(KC_6)));
+                    tap_code16(C(A(KC_G)));
                 }
                 return false;
             } else {
@@ -1092,7 +1092,7 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isLThumbWeakPristine) {
                     isLThumbWeakPristine = false;
-                    tap_code16(C(A(KC_1)));
+                    tap_code16(C(A(KC_I)));
                 } else {
                     isLThumbWeakPristine = true;
                 }
@@ -1102,7 +1102,7 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(C(A(KC_2)));
+                    tap_code16(C(A(KC_O)));
                 }
                 return false;
             } else {
@@ -1115,7 +1115,7 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(C(A(KC_3)));
+                    tap_code16(C(A(KC_P)));
                 }
                 return false;
             } else {
@@ -1145,7 +1145,7 @@ bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(RCS(KC_5));
+                    tap_code16(RCS(KC_Y));
                 }
                 return false;
             } else {
@@ -1158,7 +1158,7 @@ bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(RCS(KC_6));
+                    tap_code16(RCS(KC_G));
                 }
                 return false;
             } else {
@@ -1171,7 +1171,7 @@ bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isLThumbWeakPristine) {
                     isLThumbWeakPristine = false;
-                    tap_code16(RCS(KC_2));
+                    tap_code16(RCS(KC_O));
                 } else {
                     isLThumbWeakPristine = true;
                 }
@@ -1181,7 +1181,7 @@ bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(RCS(KC_1));
+                    tap_code16(RCS(KC_I));
                 }
                 return false;
             } else {
@@ -1194,7 +1194,7 @@ bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(RCS(KC_3));
+                    tap_code16(RCS(KC_P));
                 }
                 return false;
             } else {
@@ -1224,7 +1224,7 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(LALT(KC_5));
+                    tap_code16(LALT(KC_Y));
                 }
                 return false;
             } else {
@@ -1237,7 +1237,7 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(LALT(KC_6));
+                    tap_code16(LALT(KC_G));
                 }
                 return false;
             } else {
@@ -1250,7 +1250,7 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isLThumbWeakPristine) {
                     isLThumbWeakPristine = false;
-                    tap_code16(LALT(KC_3));
+                    tap_code16(LALT(KC_P));
                 } else {
                     isLThumbWeakPristine = true;
                 }
@@ -1260,7 +1260,7 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(LALT(KC_1));
+                    tap_code16(LALT(KC_I));
                 }
                 return false;
             } else {
@@ -1273,7 +1273,7 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
             if (isLThumbWeakPristine) {
                 if (record->event.pressed) {
                     isLThumbWeakPristine = false;
-                    tap_code16(LALT(KC_2));
+                    tap_code16(LALT(KC_O));
                 }
                 return false;
             } else {
