@@ -89,11 +89,13 @@ void register_bt_host(uint16_t kc) {
     bt_history[0] = kc;
 }
 void switch_to_previous_bt(keyrecord_t* record) {
-    uint16_t prev_kc_bt_hst = bt_history[1];
-    register_bt_host(prev_kc_bt_hst);
     if (record->event.pressed) {
+        uint16_t prev_kc_bt_hst = bt_history[1];
+        register_bt_host(prev_kc_bt_hst);
         keyrecord_t fake_record = {0};
         fake_record.event.pressed = true;
+        process_record_kb_bt(prev_kc_bt_hst, &fake_record);
+        fake_record.event.pressed = false;
         process_record_kb_bt(prev_kc_bt_hst, &fake_record);
     }
 }
