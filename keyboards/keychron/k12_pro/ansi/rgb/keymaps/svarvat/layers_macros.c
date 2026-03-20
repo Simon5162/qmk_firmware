@@ -1,3 +1,6 @@
+extern uint32_t pairing_key_timer;
+extern uint8_t  host_idx;
+
 //bool isDeadKeyCircStarted = false;
 //bool isDeadKeyTremaStarted = false;
 bool editModeLThumbStrongStarted = false;
@@ -27,6 +30,7 @@ bool isLThumbWeakPristine = true;
 bool isSftTabPristine = true;
 uint16_t inMemoryPreviousWeakLayer = 0;
 uint16_t inMemoryCurrentWeakLayer = 0;
+static uint16_t bt_history[2] = {BT_HST5, BT_HST6};
 
 void layer_on_lmouse(void) {
     layer_on(LA_MOUSE);
@@ -78,6 +82,20 @@ void reverse_weak_layer(bool isLThumbMoPristine) {
         }
         isLThumbMoPristine = false;
         isLThumbWeakPristine = false;
+    }
+}
+void register_bt_host(uint16_t kc) {
+    if (kc == bt_history[0]) return;
+    bt_history[1] = bt_history[0];
+    bt_history[0] = kc;
+}
+void switch_to_previous_bt(keyrecord_t* record) {
+    uint16_t prev_kc_bt_hst = bt_history[1];
+    register_bt_host(prev_kc_bt_hst);
+    if (record->event.pressed) {
+        keyrecord_t fake_record = {0};
+        fake_record.event.pressed = true;
+        process_record_keychron_wireless(prev_kc_bt_hst, &fake_record);
     }
 }
 bool switch_ctl_tab_off(uint16_t keycode) {
@@ -634,6 +652,12 @@ bool processKeycodeIfLThumbEStrong(uint16_t keycode, keyrecord_t* record) {
                 editModeLThumbStrongStarted = false;
             }
             layer_off(LA_LTHUMBESTRONG);
+            return true;
+        case MA_SW_BT_HST:
+            switch_to_previous_bt(record);
+            return false;
+        case BT_HST1 ... BT_HST6:
+            register_bt_host(keycode);
             return true;
         default:
             if (!(record->event.pressed)) {
