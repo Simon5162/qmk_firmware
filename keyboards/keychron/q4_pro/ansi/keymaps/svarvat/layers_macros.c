@@ -1,4 +1,4 @@
-extern bool process_record_keychron_wireless(uint16_t keycode, keyrecord_t *record);
+extern bool process_record_kb_bt(uint16_t keycode, keyrecord_t *record);
 
 //bool isDeadKeyCircStarted = false;
 //bool isDeadKeyTremaStarted = false;
@@ -94,7 +94,9 @@ void switch_to_previous_bt(keyrecord_t* record) {
     if (record->event.pressed) {
         keyrecord_t fake_record = {0};
         fake_record.event.pressed = true;
-        process_record_keychron_wireless(prev_kc_bt_hst, &fake_record);
+        process_record_kb_bt(prev_kc_bt_hst, &fake_record);
+        fake_record.event.pressed = false;
+        process_record_kb_bt(prev_kc_bt_hst, &fake_record);
     }
 }
 bool switch_ctl_tab_off(uint16_t keycode) {
