@@ -654,12 +654,6 @@ bool processKeycodeIfLThumbEStrong(uint16_t keycode, keyrecord_t* record) {
             }
             layer_off(LA_LTHUMBESTRONG);
             return true;
-        case MA_SW_BT_HST:
-            switch_to_previous_bt(record);
-            return false;
-        case BT_HST1 ... BT_HST6:
-            register_bt_host(keycode);
-            return true;
         default:
             if (!(record->event.pressed)) {
                 if (editModeLThumbStrongStarted) {
@@ -1149,6 +1143,12 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
                 }
                 return true;
             }
+        case MA_SW_BT_HST:
+            switch_to_previous_bt(record);
+            return false;
+        case BT_HST1 ... BT_HST6:
+            register_bt_host(keycode);
+            return true;
         default:
             isLThumbWeakPristine = false;
             return true;
