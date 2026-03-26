@@ -1,7 +1,14 @@
 
 uint16_t scrollDelayTimer;
 
+extern bool bt_wake_pending;
+extern uint32_t bt_wake_timer;
+
 void matrix_scan_user(void) {
+    if (bt_wake_pending && timer_elapsed32(bt_wake_timer) > 500) {
+        bt_wake_pending = false;
+        tap_code16(KC_RSFT);
+    }
     if (IS_LAYER_ON(LA_MOUSE)) {
         if (isMouseX4Started) {
             if (mouseRight) {

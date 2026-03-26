@@ -30,6 +30,8 @@ bool isSftTabPristine = true;
 uint16_t inMemoryPreviousWeakLayer = 0;
 uint16_t inMemoryCurrentWeakLayer = 0;
 static uint16_t bt_history[2] = {BT_HST5, BT_HST6};
+bool bt_wake_pending = false;
+uint32_t bt_wake_timer = 0;
 
 void layer_on_lmouse(void) {
     layer_on(LA_MOUSE);
@@ -87,6 +89,8 @@ void register_bt_host(uint16_t kc) {
     if (kc == bt_history[0]) return;
     bt_history[1] = bt_history[0];
     bt_history[0] = kc;
+    bt_wake_pending = true;
+    bt_wake_timer = timer_read32();
 }
 void switch_to_previous_bt(keyrecord_t* record) {
     if (record->event.pressed) {
@@ -1143,12 +1147,6 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
                 }
                 return true;
             }
-        case MA_SW_BT_HST:
-            switch_to_previous_bt(record);
-            return false;
-        case BT_HST1 ... BT_HST6:
-            register_bt_host(keycode);
-            return true;
         default:
             isLThumbWeakPristine = false;
             return true;
@@ -1439,6 +1437,12 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
                 isLThumbWeakPristine = false;
             }
             return false;
+        case MA_SW_BT_HST:
+            switch_to_previous_bt(record);
+            return false;
+        case BT_HST1 ... BT_HST6:
+            register_bt_host(keycode);
+            return true;
         default:
             isLThumbWeakPristine = false;
             return true;
