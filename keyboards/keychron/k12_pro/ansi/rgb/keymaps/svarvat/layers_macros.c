@@ -33,6 +33,32 @@ static uint16_t bt_history[2] = {BT_HST5, BT_HST6};
 bool bt_wake_pending = false;
 uint32_t bt_wake_timer = 0;
 
+typedef union {
+    uint32_t raw;
+    struct {
+        uint16_t bt_history_0;
+        uint16_t bt_history_1;
+    };
+} user_config_t;
+
+void eeconfig_init_user(void) {
+    user_config_t user_config;
+    user_config.bt_history_0 = BT_HST5;
+    user_config.bt_history_1 = BT_HST6;
+    eeconfig_update_user(user_config.raw);
+}
+
+void keyboard_post_init_user(void) {
+    user_config_t user_config;
+    user_config.raw = eeconfig_read_user();
+    if (user_config.bt_history_0 >= BT_HST1 && user_config.bt_history_0 <= BT_HST6) {
+        bt_history[0] = user_config.bt_history_0;
+    }
+    if (user_config.bt_history_1 >= BT_HST1 && user_config.bt_history_1 <= BT_HST6) {
+        bt_history[1] = user_config.bt_history_1;
+    }
+}
+
 void layer_on_lmouse(void) {
     layer_on(LA_MOUSE);
     tap_code16(KC_SCROLL_LOCK);
@@ -89,6 +115,10 @@ void register_bt_host(uint16_t kc) {
     if (kc == bt_history[0]) return;
     bt_history[1] = bt_history[0];
     bt_history[0] = kc;
+    user_config_t user_config;
+    user_config.bt_history_0 = bt_history[0];
+    user_config.bt_history_1 = bt_history[1];
+    eeconfig_update_user(user_config.raw);
     bt_wake_pending = true;
     bt_wake_timer = timer_read32();
 }
@@ -790,7 +820,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             return true;
         case KC_LEFT:
             if (record->event.pressed) {
-                if (isCtlTabStarted) {
+                 if (isCtlTabStarted) {
                     register_code16(KC_LSFT);
                     tap_code16(KC_TAB);
                     unregister_code16(KC_LSFT);
