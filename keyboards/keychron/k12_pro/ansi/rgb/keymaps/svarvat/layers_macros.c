@@ -22,10 +22,6 @@ bool isFloodRightOn = false;
 bool isFloodDelOn = false;
 bool isFloodEntOn = false;
 bool isFloodBspcOn = false;
-extern uint16_t floodTimerX3;
-extern uint16_t floodTimerX2;
-extern uint16_t floodIntervalX3;
-extern uint16_t floodIntervalX2;
 bool isMuteKeysEnabled = false;
 bool isWeakLaMouseStarted = false;
 bool isMouseBtn1HoldStarted = false;
@@ -1349,10 +1345,21 @@ bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
             if (IS_LAYER_ON(LA_LTHUMBMS)) {
                 if (record->event.pressed) {
                     if (isLThumbWeakPristine
-                    && !isMouseDownOn
-                    && !isMouseUpOn
+                    && !isMouseLeftOn
                     && !isMouseRightOn
-                    && !isMouseLeftOn) {
+                    && !isMouseUpOn
+                    && !isMouseDownOn
+                    && !isScrollLeftOn
+                    && !isScrollRightOn
+                    && !isScrollUpOn
+                    && !isScrollDownOn
+                    && !isFloodUpOn
+                    && !isFloodDownOn
+                    && !isFloodLeftOn
+                    && !isFloodRightOn
+                    && !isFloodDelOn
+                    && !isFloodEntOn
+                    && !isFloodBspcOn) {
                         isLThumbWeakPristine = false;
                         tap_code16(C(KC_Q));
                     } else {
@@ -1405,10 +1412,21 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
             if (IS_LAYER_ON(LA_LTHUMBMS)) {
                 if (record->event.pressed) {
                     if (isLThumbWeakPristine
-                    && !isMouseDownOn
-                    && !isMouseUpOn
+                    && !isMouseLeftOn
                     && !isMouseRightOn
-                    && !isMouseLeftOn) {
+                    && !isMouseUpOn
+                    && !isMouseDownOn
+                    && !isScrollLeftOn
+                    && !isScrollRightOn
+                    && !isScrollUpOn
+                    && !isScrollDownOn
+                    && !isFloodUpOn
+                    && !isFloodDownOn
+                    && !isFloodLeftOn
+                    && !isFloodRightOn
+                    && !isFloodDelOn
+                    && !isFloodEntOn
+                    && !isFloodBspcOn) {
                         isLThumbWeakPristine = false;
                         tap_code16(G(KC_UP));
                     } else {
