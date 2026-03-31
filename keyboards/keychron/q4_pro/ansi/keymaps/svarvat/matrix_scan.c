@@ -54,8 +54,8 @@ void matrix_scan_user(void) {
         bt_wake_pending = false;
         tap_code16(KC_RSFT);
     }
-    if (IS_LAYER_ON(LA_MOUSE)) {
-        if (IS_LAYER_ON(LA_LTHUMBEMO)) {
+    if (IS_LAYER_ON(LA_LTHUMBEMO)) {
+        if (IS_LAYER_ON(LA_MOUSE)) {
             int8_t mx = isMouseRightOn ? 8 : (isMouseLeftOn ? -8 : 0);
             int8_t my = isMouseDownOn  ? 8 : (isMouseUpOn   ? -8 : 0);
             if (mx || my) move_mouse(mx, my);
@@ -67,14 +67,15 @@ void matrix_scan_user(void) {
                     floodTimerX3 = timer_read();
                 }
             }
-            if (isFloodUpOn || isFloodDownOn || isFloodLeftOn || isFloodRightOn
-            || isFloodDelOn || isFloodEntOn || isFloodBspcOn) {
-                if (timer_elapsed(floodTimerX3) > floodKeyCodeIntervalX3) {
-                    dispatch_flood_keys();
-                    floodTimerX3 = timer_read();
-                }
+        } else if (isFloodUpOn || isFloodDownOn || isFloodLeftOn || isFloodRightOn
+        || isFloodDelOn || isFloodEntOn || isFloodBspcOn) {
+            if (timer_elapsed(floodTimerX3) > floodKeyCodeIntervalX3) {
+                dispatch_flood_keys();
+                floodTimerX3 = timer_read();
             }
-        } else if (IS_LAYER_ON(LA_LTHUMBDMO)) {
+        }
+    } else if (IS_LAYER_ON(LA_LTHUMBDMO)) {
+        if (IS_LAYER_ON(LA_MOUSE)) {
             int8_t mx = isMouseRightOn ? 3 : (isMouseLeftOn ? -3 : 0);
             int8_t my = isMouseDownOn  ? 3 : (isMouseUpOn   ? -3 : 0);
             if (mx || my) move_mouse(mx, my);
@@ -86,27 +87,26 @@ void matrix_scan_user(void) {
                     floodTimerX2 = timer_read();
                 }
             }
-            if (isFloodUpOn || isFloodDownOn || isFloodLeftOn || isFloodRightOn
-            || isFloodDelOn || isFloodEntOn || isFloodBspcOn) {
-                if (timer_elapsed(floodTimerX2) > floodKeyCodeIntervalX2) {
-                    dispatch_flood_keys();
-                    floodTimerX2 = timer_read();
-                }
+        } else if (isFloodUpOn || isFloodDownOn || isFloodLeftOn || isFloodRightOn
+        || isFloodDelOn || isFloodEntOn || isFloodBspcOn) {
+            if (timer_elapsed(floodTimerX2) > floodKeyCodeIntervalX2) {
+                dispatch_flood_keys();
+                floodTimerX2 = timer_read();
             }
-        } else {
-            if (isMouseRightOn || isMouseLeftOn || isMouseDownOn || isMouseUpOn) {
-                if (timer_elapsed(floodTimerX1) > floodMouseIntervalX1) {
-                    move_mouse(isMouseRightOn ? 1 : (isMouseLeftOn ? -1 : 0),
-                               isMouseDownOn  ? 1 : (isMouseUpOn   ? -1 : 0));
-                    floodTimerX1 = timer_read();
-                }
+        }
+    } else if (IS_LAYER_ON(LA_MOUSE)) {
+        if (isMouseRightOn || isMouseLeftOn || isMouseDownOn || isMouseUpOn) {
+            if (timer_elapsed(floodTimerX1) > floodMouseIntervalX1) {
+                move_mouse(isMouseRightOn ? 1 : (isMouseLeftOn ? -1 : 0),
+                           isMouseDownOn  ? 1 : (isMouseUpOn   ? -1 : 0));
+                floodTimerX1 = timer_read();
             }
-            if (isScrollDownOn || isScrollUpOn || isScrollLeftOn || isScrollRightOn) {
-                if (timer_elapsed(floodTimerX1) > floodScrollIntervalX1) {
-                    scroll_mouse(isScrollUpOn   ? 1 : (isScrollDownOn  ? -1 : 0),
-                                 isScrollRightOn ? 1 : (isScrollLeftOn ? -1 : 0));
-                    floodTimerX1 = timer_read();
-                }
+        }
+        if (isScrollDownOn || isScrollUpOn || isScrollLeftOn || isScrollRightOn) {
+            if (timer_elapsed(floodTimerX1) > floodScrollIntervalX1) {
+                scroll_mouse(isScrollUpOn   ? 1 : (isScrollDownOn  ? -1 : 0),
+                             isScrollRightOn ? 1 : (isScrollLeftOn ? -1 : 0));
+                floodTimerX1 = timer_read();
             }
         }
     }
