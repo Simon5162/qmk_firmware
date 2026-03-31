@@ -7,20 +7,25 @@ bool isCtlTabStarted = false;
 bool isAltTabStarted = false;
 bool isSftTabStarted = false;
 bool isCapswordStarted = false;
-bool mouseLeft = false;
-bool mouseRight = false;
-bool mouseUp = false;
-bool mouseDown = false;
-bool isMouseX1Started = false;
-bool isMouseX2Started = false;
-bool isMouseX4Started = false;
-bool scrollLeft = false;
-bool scrollRight = false;
-bool scrollUp = false;
-bool scrollDown = false;
-bool isScrollX1Started = false;
-bool isScrollX2Started = false;
-bool isScrollX4Started = false;
+bool isMouseLeftOn = false;
+bool isMouseRightOn = false;
+bool isMouseUpOn = false;
+bool isMouseDownOn = false;
+bool isScrollLeftOn = false;
+bool isScrollRightOn = false;
+bool isScrollUpOn = false;
+bool isScrollDownOn = false;
+bool isFloodUpOn = false;
+bool isFloodDownOn = false;
+bool isFloodLeftOn = false;
+bool isFloodRightOn = false;
+bool isFloodDelOn = false;
+bool isFloodEntOn = false;
+bool isFloodBspcOn = false;
+extern uint16_t floodTimerX3;
+extern uint16_t floodTimerX2;
+extern uint16_t floodIntervalX3;
+extern uint16_t floodIntervalX2;
 bool isMuteKeysEnabled = false;
 bool isWeakLaMouseStarted = false;
 bool isMouseBtn1HoldStarted = false;
@@ -40,14 +45,12 @@ typedef union {
         uint16_t bt_history_1;
     };
 } user_config_t;
-
 void eeconfig_init_user(void) {
     user_config_t user_config;
     user_config.bt_history_0 = BT_HST5;
     user_config.bt_history_1 = BT_HST6;
     eeconfig_update_user(user_config.raw);
 }
-
 void keyboard_post_init_user(void) {
     user_config_t user_config;
     user_config.raw = eeconfig_read_user();
@@ -62,23 +65,15 @@ void keyboard_post_init_user(void) {
 void layer_on_lmouse(void) {
     layer_on(LA_MOUSE);
     tap_code16(KC_SCROLL_LOCK);
-    isMouseX1Started = true;
-    isScrollX1Started = true;
 }
 void layer_off_lmouse(void) {
 //  set_auto_mouse_enable(false);
     layer_off(LA_MOUSE);
     tap_code16(KC_SCROLL_LOCK);
-    isMouseX1Started = false;
-    isScrollX1Started = false;
-    isMouseX2Started = false;
-    isScrollX2Started = false;
-    isMouseX4Started = false;
-    isScrollX4Started = false;
-    scrollLeft = false;
-    scrollUp = false;
-    scrollDown = false;
-    scrollRight = false;
+    isScrollLeftOn = false;
+    isScrollUpOn = false;
+    isScrollDownOn = false;
+    isScrollRightOn = false;
     mouseDown = false;
     mouseUp = false;
     mouseRight = false;
@@ -103,7 +98,7 @@ void layer_off_weak_layer(uint16_t layer) {
 }
 void reverse_weak_layer(bool isLThumbMoPristine) {
     if (isLThumbMoPristine) {
-        if (inMemoryPreviousWeakLayer != 0 && !isAltTabStarted && !isSftTabStarted) {
+        if (inMemoryPreviousWeakLayer != 0) {
             layer_off(inMemoryCurrentWeakLayer);
             layer_on(inMemoryPreviousWeakLayer);
         }
@@ -152,10 +147,10 @@ bool switch_ctl_tab_off(uint16_t keycode) {
     && (keycode != MA_MS_DOWN)
     && (keycode != MA_LTHUMBD)
     && (keycode != MA_LTHUMBE)
-    && (keycode != MA_RIGHTX4)
-    && (keycode != MA_LEFTX4)
-    && (keycode != MA_DOWNX4)
-    && (keycode != MA_UPX4)
+    && (keycode != MA_RIGHTX3)
+    && (keycode != MA_LEFTX3)
+    && (keycode != MA_DOWNX3)
+    && (keycode != MA_UPX3)
     && (keycode != MA_RIGHTX2)
     && (keycode != MA_LEFTX2)
     && (keycode != MA_DOWNX2)
@@ -165,7 +160,7 @@ bool switch_ctl_tab_off(uint16_t keycode) {
         unregister_mods(MOD_MASK_CTRL);
         if ((keycode == KC_ENT)
         || (keycode == MA_ENTX2)
-        || (keycode == MA_ENTX4)) {
+        || (keycode == MA_ENTX3)) {
             return false;
         }
     }
@@ -182,10 +177,10 @@ bool switch_alt_tab_off(uint16_t keycode) {
     && (keycode != C(KC_Z))
     && (keycode != MA_LTHUMBE)
     && (keycode != MA_LTHUMBD)
-    && (keycode != MA_RIGHTX4)
-    && (keycode != MA_LEFTX4)
-    && (keycode != MA_DOWNX4)
-    && (keycode != MA_UPX4)
+    && (keycode != MA_RIGHTX3)
+    && (keycode != MA_LEFTX3)
+    && (keycode != MA_DOWNX3)
+    && (keycode != MA_UPX3)
     && (keycode != MA_RIGHTX2)
     && (keycode != MA_LEFTX2)
     && (keycode != MA_DOWNX2)
@@ -199,7 +194,7 @@ bool switch_alt_tab_off(uint16_t keycode) {
         layer_off_mo_layer(LA_LTHUMBEMO);
         if ((keycode == KC_ENT)
         || (keycode == MA_ENTX2)
-        || (keycode == MA_ENTX4)) {
+        || (keycode == MA_ENTX3)) {
             return false;
         }
     }
@@ -214,10 +209,10 @@ bool switch_sht_tab_off(uint16_t keycode) {
     && (keycode != KC_RIGHT)
     && (keycode != MA_LTHUMBE)
     && (keycode != MA_LTHUMBD)
-    && (keycode != MA_RIGHTX4)
-    && (keycode != MA_LEFTX4)
-    && (keycode != MA_DOWNX4)
-    && (keycode != MA_UPX4)
+    && (keycode != MA_RIGHTX3)
+    && (keycode != MA_LEFTX3)
+    && (keycode != MA_DOWNX3)
+    && (keycode != MA_UPX3)
     && (keycode != MA_RIGHTX2)
     && (keycode != MA_LEFTX2)
     && (keycode != MA_DOWNX2)
@@ -491,16 +486,16 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
             return false;
         case MA_MS_WH_DOWN:
             if (record->event.pressed) {
-                scrollDown = true;
+                isScrollDownOn = true;
             } else {
-                scrollDown = false;
+                isScrollDownOn = false;
             }
             return false;
         case MA_MS_WH_UP:
             if (record->event.pressed) {
-                scrollUp = true;
+                isScrollUpOn = true;
             } else {
-                scrollUp = false;
+                isScrollUpOn = false;
             }
             return false;
         case MA_MS_DOWN:
@@ -820,7 +815,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             return true;
         case KC_LEFT:
             if (record->event.pressed) {
-                if (isCtlTabStarted) {
+                 if (isCtlTabStarted) {
                     register_code16(KC_LSFT);
                     tap_code16(KC_TAB);
                     unregister_code16(KC_LSFT);
@@ -930,14 +925,10 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
             if (!(record->event.pressed)) {
                 isWeakLaMouseStarted = false;
                 layer_off(LA_LTHUMBMS);
-                isMouseX2Started = false;
-                isScrollX2Started = false;
-                isMouseX4Started = false;
-                isScrollX4Started = false;
-                scrollLeft = false;
-                scrollUp = false;
-                scrollDown = false;
-                scrollRight = false;
+                isScrollLeftOn = false;
+                isScrollUpOn = false;
+                isScrollDownOn = false;
+                isScrollRightOn = false;
                 mouseDown = false;
                 mouseUp = false;
                 mouseRight = false;
@@ -955,26 +946,17 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
             return false;
         case MA_LTHUMBD:
             if (record->event.pressed) {
-                isMouseX2Started = true;
-                isScrollX2Started = true;
                 if (!isWeakLaMouseStarted) {
                     layer_on_weak_layer(LA_LTHUMBDWEAK);
                 }
-            } else {
-                isMouseX2Started = false;
-                isScrollX2Started = false;
             }
             return false;
         case MA_LTHUMBE:
             if (record->event.pressed) {
-                isMouseX4Started = true;
-                isScrollX4Started = true;
                 if (!isWeakLaMouseStarted) {
                     layer_on_weak_layer(LA_LTHUMBEWEAK);
                 }
             } else {
-                isMouseX4Started = false;
-                isScrollX4Started = false;
             }
             return false;
         case MA_LTHUMB1:
@@ -1482,168 +1464,106 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case MA_LTHUMBE:
             if (!(record->event.pressed)) {
+                isUpX3Started = false;
+                isDownX3Started = false;
+                isLeftX3Started = false;
+                isRightX3Started = false;
+                isDelX3Started = false;
+                isEntX3Started = false;
+                isBspcX3Started = false;
                 layer_off_mo_layer(LA_LTHUMBEMO);
             }
             return false;
-        case MA_UPX4:
+        case MA_UPX3:
             if (record->event.pressed) {
                 if (isCtlTabStarted || isSftTabStarted) {
                     register_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
+                    register_code16(KC_TAB);
+                } else {
+                    isUpX3Started = true;
+                }
+                reverse_weak_layer(isLThumbMoPristine);
+            } else {
+                if (isCtlTabStarted || isSftTabStarted) {
+                    unregister_code16(KC_TAB);
                     unregister_code16(KC_LSFT);
                 } else {
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    reverse_weak_layer(isLThumbMoPristine);
+                    isUpX3Started = false;
                 }
             }
             return false;
-        case MA_DOWNX4:
+        case MA_DOWNX3:
             if (record->event.pressed) {
                 if (isCtlTabStarted || isSftTabStarted) {
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
+                    register_code16(KC_TAB);
                 } else {
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    reverse_weak_layer(isLThumbMoPristine);
+                    isDownX3Started = true;
+                }
+                reverse_weak_layer(isLThumbMoPristine);
+            } else {
+                if (isCtlTabStarted || isSftTabStarted) {
+                    unregister_code16(KC_TAB);
+                } else {
+                    isDownX3Started = false;
                 }
             }
             return false;
-        case MA_LEFTX4:
+        case MA_LEFTX3:
             if (record->event.pressed) {
                 if (isCtlTabStarted || isSftTabStarted) {
                     register_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
+                    register_code16(KC_TAB);
+                } else {
+                    isLeftX3Started = true;
+                }
+                reverse_weak_layer(isLThumbMoPristine);
+            } else {
+                if (isCtlTabStarted || isSftTabStarted) {
+                    unregister_code16(KC_TAB);
                     unregister_code16(KC_LSFT);
                 } else {
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    reverse_weak_layer(isLThumbMoPristine);
+                    isLeftX3Started = false;
                 }
             }
             return false;
-        case MA_RIGHTX4:
+        case MA_RIGHTX3:
             if (record->event.pressed) {
                 if (isCtlTabStarted || isSftTabStarted) {
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
+                    register_code16(KC_TAB);
                 } else {
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    reverse_weak_layer(isLThumbMoPristine);
+                    isRightX3Started = true;
+                }
+                reverse_weak_layer(isLThumbMoPristine);
+            } else {
+                if (isCtlTabStarted || isSftTabStarted) {
+                    unregister_code16(KC_TAB);
+                } else {
+                    isRightX3Started = false;
                 }
             }
             return false;
-        case MA_DELX4:
+        case MA_DELX3:
             if (record->event.pressed) {
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
+                isDelX3Started = true;
                 reverse_weak_layer(isLThumbMoPristine);
+            } else {
+                isDelX3Started = false;
             }
             return false;
-        case MA_ENTX4:
+        case MA_ENTX3:
             if (record->event.pressed) {
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
+                isEntX3Started = true;
                 reverse_weak_layer(isLThumbMoPristine);
+            } else {
+                isEntX3Started = false;
             }
             return false;
-        case MA_BSPCX4:
+        case MA_BSPCX3:
             if (record->event.pressed) {
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
+                isBspcX3Started = true;
                 reverse_weak_layer(isLThumbMoPristine);
+            } else {
+                isBspcX3Started = false;
             }
             return false;
         default:
@@ -1654,6 +1574,13 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case MA_LTHUMBD:
             if (!(record->event.pressed)) {
+                isUpX2Started = false;
+                isDownX2Started = false;
+                isLeftX2Started = false;
+                isRightX2Started = false;
+                isDelX2Started = false;
+                isEntX2Started = false;
+                isBspcX2Started = false;
                 layer_off_mo_layer(LA_LTHUMBDMO);
             }
             return false;
@@ -1666,10 +1593,17 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
                     tap_code16(KC_TAB);
                     unregister_code16(KC_LSFT);
                 } else {
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    tap_code16(KC_UP);
-                    reverse_weak_layer(isLThumbMoPristine);
+                    isUpX2Started = true;
+                }
+            } else {
+                if (isCtlTabStarted || isSftTabStarted) {
+                    register_code16(KC_LSFT);
+                    tap_code16(KC_TAB);
+                    tap_code16(KC_TAB);
+                    tap_code16(KC_TAB);
+                    unregister_code16(KC_LSFT);
+                } else {
+                    isUpX2Started = false;
                 }
             }
             return false;
@@ -1680,10 +1614,15 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
                     tap_code16(KC_TAB);
                     tap_code16(KC_TAB);
                 } else {
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    tap_code16(KC_DOWN);
-                    reverse_weak_layer(isLThumbMoPristine);
+                    isDownX2Started = true;
+                }
+            } else {
+                if (isCtlTabStarted || isSftTabStarted) {
+                    tap_code16(KC_TAB);
+                    tap_code16(KC_TAB);
+                    tap_code16(KC_TAB);
+                } else {
+                    isDownX2Started = false;
                 }
             }
             return false;
@@ -1696,10 +1635,17 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
                     tap_code16(KC_TAB);
                     unregister_code16(KC_LSFT);
                 } else {
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    tap_code16(KC_LEFT);
-                    reverse_weak_layer(isLThumbMoPristine);
+                    isLeftX2Started = true;
+                }
+            } else {
+                if (isCtlTabStarted || isSftTabStarted) {
+                    register_code16(KC_LSFT);
+                    tap_code16(KC_TAB);
+                    tap_code16(KC_TAB);
+                    tap_code16(KC_TAB);
+                    unregister_code16(KC_LSFT);
+                } else {
+                    isLeftX2Started = false;
                 }
             }
             return false;
@@ -1710,35 +1656,37 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
                     tap_code16(KC_TAB);
                     tap_code16(KC_TAB);
                 } else {
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    tap_code16(KC_RIGHT);
-                    reverse_weak_layer(isLThumbMoPristine);
+                    isRightX2Started = true;
+                }
+            } else {
+                if (isCtlTabStarted || isSftTabStarted) {
+                    tap_code16(KC_TAB);
+                    tap_code16(KC_TAB);
+                    tap_code16(KC_TAB);
+                } else {
+                    isRightX2Started = false;
                 }
             }
             return false;
         case MA_DELX2:
             if (record->event.pressed) {
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
-                tap_code16(KC_DEL);
-                reverse_weak_layer(isLThumbMoPristine);
+                isDelX2Started = true;
+            } else {
+                isDelX2Started = false;
             }
             return false;
         case MA_ENTX2:
             if (record->event.pressed) {
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
-                tap_code16(KC_ENT);
-                reverse_weak_layer(isLThumbMoPristine);
+                isEntX2Started = true;
+            } else {
+                isEntX2Started = false;
             }
             return false;
         case MA_BSPCX2:
             if (record->event.pressed) {
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
-                tap_code16(KC_BSPC);
-                reverse_weak_layer(isLThumbMoPristine);
+                isBspcX2Started = true;
+            } else {
+                isBspcX2Started = false;
             }
             return false;
         default:
