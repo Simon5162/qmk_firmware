@@ -22,6 +22,8 @@ bool isFloodRightOn = false;
 bool isFloodDelOn = false;
 bool isFloodEntOn = false;
 bool isFloodBspcOn = false;
+bool isFloodTabOn = false;
+bool isFloodReverseTabOn = false;
 bool isMuteKeysEnabled = false;
 bool isWeakLaMouseStarted = false;
 bool isMouseBtn1HoldStarted = false;
@@ -951,7 +953,7 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
                 if (!isWeakLaMouseStarted) {
                     layer_on_weak_layer(LA_LTHUMBEWEAK);
                 }
-                layer_on(LA_LTHUMBDMO);
+                layer_on(LA_LTHUMBEMO);
             }
             return false;
         case MA_LTHUMB1:
