@@ -143,15 +143,10 @@ bool switch_ctl_tab_off(uint16_t keycode) {
     && (keycode != MA_MS_DOWN)
     && (keycode != MA_LTHUMBD)
     && (keycode != MA_LTHUMBE)
-    && (keycode != MA_RIGHT)
-    && (keycode != MA_LEFT)
-    && (keycode != MA_DOWN)
-    && (keycode != MA_UP)
     && (keycode != KC_LSFT)) {
         isCtlTabStarted = false;
         unregister_mods(MOD_MASK_CTRL);
-        if ((keycode == KC_ENT)
-        || (keycode == MA_ENT)) {
+        if (keycode == KC_ENT) {
             return false;
         }
     }
@@ -168,10 +163,6 @@ bool switch_alt_tab_off(uint16_t keycode) {
     && (keycode != C(KC_Z))
     && (keycode != MA_LTHUMBE)
     && (keycode != MA_LTHUMBD)
-    && (keycode != MA_RIGHT)
-    && (keycode != MA_LEFT)
-    && (keycode != MA_DOWN)
-    && (keycode != MA_UP)
     && (keycode != KC_LSFT)) {
         isAltTabStarted = false;
         isLThumbWeakPristine = true;
@@ -179,8 +170,7 @@ bool switch_alt_tab_off(uint16_t keycode) {
         layer_off(LA_LTHUMB);
         layer_off_mo_layer(LA_LTHUMBDMO);
         layer_off_mo_layer(LA_LTHUMBEMO);
-        if ((keycode == KC_ENT)
-        || (keycode == MA_ENT)) {
+        if (keycode == KC_ENT) {
             return false;
         }
     }
@@ -194,11 +184,7 @@ bool switch_sht_tab_off(uint16_t keycode) {
     && (keycode != KC_LEFT)
     && (keycode != KC_RIGHT)
     && (keycode != MA_LTHUMBE)
-    && (keycode != MA_LTHUMBD)
-    && (keycode != MA_RIGHT)
-    && (keycode != MA_LEFT)
-    && (keycode != MA_DOWN)
-    && (keycode != MA_UP)) {
+    && (keycode != MA_LTHUMBD)) {
         isSftTabStarted = false;
         isSftTabPristine = true;
         isLThumbWeakPristine = true;
@@ -712,7 +698,7 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
             return true;
     }
 }
-bool(uint16_t keycode, keyrecord_t* record) {
+bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
     if (!switch_ctl_tab_off(keycode)) {return false;}
     if (!switch_alt_tab_off(keycode)) {return false;}
     if (!switch_sht_tab_off(keycode)) {return false;}
@@ -831,7 +817,7 @@ bool(uint16_t keycode, keyrecord_t* record) {
                 }
                 isFloodLeftOn = true;
             } else {
-                isFloodDownOn = false;
+                isFloodLeftOn = false;
             }
             return true;
         case KC_RGHT:
