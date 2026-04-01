@@ -1,9 +1,9 @@
 
-uint16_t floodTimerX3 = 0;
-uint16_t floodTimerX2 = 0;
 uint16_t floodTimerX1 = 0;
-uint16_t floodKeyCodeIntervalX3 = 80;
-uint16_t floodKeyCodeIntervalX2 = 150;
+uint16_t floodTimerX2 = 0;
+uint16_t floodTimerX3 = 0;
+uint16_t floodKeyCodeIntervalX2 = 100;
+uint16_t floodKeyCodeIntervalX3 = 50;
 uint16_t floodScrollIntervalX1 = 40;
 uint16_t floodScrollIntervalX2 = 100;
 uint16_t floodScrollIntervalX3 = 100;
@@ -14,14 +14,6 @@ uint16_t floodBlueToothInterval = 500;
 
 extern bool bt_wake_pending;
 extern uint32_t bt_wake_timer;
-
-extern bool isFloodUpOn;
-extern bool isFloodDownOn;
-extern bool isFloodLeftOn;
-extern bool isFloodRightOn;
-extern bool isFloodDelOn;
-extern bool isFloodEntOn;
-extern bool isFloodBspcOn;
 
 static void move_mouse(int8_t x, int8_t y) {
     report_mouse_t r = pointing_device_get_report();

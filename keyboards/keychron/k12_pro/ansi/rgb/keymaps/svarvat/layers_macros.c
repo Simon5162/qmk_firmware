@@ -80,13 +80,6 @@ void layer_off_lmouse(void) {
     }
 }
 void layer_off_mo_layer(uint16_t layer) {
-    isFloodUpOn = false;
-    isFloodDownOn = false;
-    isFloodLeftOn = false;
-    isFloodRightOn = false;
-    isFloodDelOn = false;
-    isFloodEntOn = false;
-    isFloodBspcOn = false;
     isLThumbMoPristine = true;
     layer_off(layer);
 }
@@ -741,6 +734,13 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
         case MA_LTHUMB:
             if (!(record->event.pressed)) {
                 layer_off(LA_LTHUMB);
+                isFloodUpOn = false;
+                isFloodDownOn = false;
+                isFloodLeftOn = false;
+                isFloodRightOn = false;
+                isFloodDelOn = false;
+                isFloodEntOn = false;
+                isFloodBspcOn = false;
                 inMemoryPreviousWeakLayer = 0;
             }
             return false;
