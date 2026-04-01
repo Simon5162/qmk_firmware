@@ -39,6 +39,24 @@ static void dispatch_flood_keys(void) {
     if (isFloodDelOn)   tap_code16(KC_DEL);
     if (isFloodEntOn)   tap_code16(KC_ENT);
     if (isFloodBspcOn)  tap_code16(KC_BSPC);
+    if (isFloodReverseTabOn) {
+        if (isCtlTabStarted) {
+            register_code16(KC_LSFT);
+            tap_code16(KC_TAB);
+            unregister_code16(KC_LSFT);
+        } else {
+            tap_code16(KC_TAB);
+        }
+    }
+    if (isFloodTabOn) {
+        if (isSftTabStarted) {
+            unregister_code16(KC_LSFT);
+            tap_code16(KC_TAB);
+            register_code16(KC_LSFT);
+        } else {
+            tap_code16(KC_TAB);
+        }
+    }
 }
 
 void matrix_scan_user(void) {
@@ -60,7 +78,8 @@ void matrix_scan_user(void) {
                 }
             }
         } else if (isFloodUpOn || isFloodDownOn || isFloodLeftOn || isFloodRightOn
-        || isFloodDelOn || isFloodEntOn || isFloodBspcOn) {
+        || isFloodDelOn || isFloodEntOn || isFloodBspcOn
+        || isFloodReverseTabOn || isFloodTabOn) {
             if (timer_elapsed(floodTimerX3) > floodKeyCodeIntervalX3) {
                 dispatch_flood_keys();
                 floodTimerX3 = timer_read();
@@ -80,7 +99,8 @@ void matrix_scan_user(void) {
                 }
             }
         } else if (isFloodUpOn || isFloodDownOn || isFloodLeftOn || isFloodRightOn
-        || isFloodDelOn || isFloodEntOn || isFloodBspcOn) {
+        || isFloodDelOn || isFloodEntOn || isFloodBspcOn
+        || isFloodReverseTabOn || isFloodTabOn) {
             if (timer_elapsed(floodTimerX2) > floodKeyCodeIntervalX2) {
                 dispatch_flood_keys();
                 floodTimerX2 = timer_read();
