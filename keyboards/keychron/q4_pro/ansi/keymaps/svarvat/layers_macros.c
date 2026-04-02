@@ -1498,6 +1498,15 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
         case MA_LTHUMBE:
             if (!(record->event.pressed)) {
                 layer_off_mo_layer(LA_LTHUMBEMO);
+                if (isFloodUpOn
+                    || isFloodDownOn
+                    || isFloodLeftOn
+                    || isFloodRightOn
+                    || isFloodDelOn
+                    || isFloodEntOn
+                    || isFloodBspcOn) {
+                    reverse_weak_layer();
+                }
             }
             return false;
         case KC_UP:
@@ -1584,6 +1593,15 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
         case MA_LTHUMBD:
             if (!(record->event.pressed)) {
                 layer_off_mo_layer(LA_LTHUMBDMO);
+                if (isFloodUpOn
+                    || isFloodDownOn
+                    || isFloodLeftOn
+                    || isFloodRightOn
+                    || isFloodDelOn
+                    || isFloodEntOn
+                    || isFloodBspcOn) {
+                    reverse_weak_layer();
+                }
             }
             return false;
         case KC_UP:
