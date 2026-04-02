@@ -1500,7 +1500,6 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
                 layer_off_mo_layer(LA_LTHUMBEMO);
             }
             return false;
-
         case KC_UP:
             if (record->event.pressed) {
                 if (isCtlTabStarted || isSftTabStarted) {
@@ -1668,9 +1667,6 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
             }
             return true;
         default:
-            if (record->event.pressed) {
-                reverse_weak_layer();
-            }
             return true;
     }
 }
