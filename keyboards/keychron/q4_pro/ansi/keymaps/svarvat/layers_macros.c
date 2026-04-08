@@ -1386,7 +1386,8 @@ bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
                     && !isFloodRightOn
                     && !isFloodDelOn
                     && !isFloodEntOn
-                    && !isFloodBspcOn) {
+                    && !isFloodBspcOn
+                    && !isFloodTabOn) {
                         isLThumbWeakPristine = false;
                         tap_code16(C(KC_Q));
                     } else {
@@ -1404,7 +1405,8 @@ bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
                     && !isFloodRightOn
                     && !isFloodDelOn
                     && !isFloodEntOn
-                    && !isFloodBspcOn) {
+                    && !isFloodBspcOn
+                    && !isFloodTabOn) {
                         tap_code16(C(KC_Q));
                         isLThumbWeakPristine = false;
                     } else {
@@ -1460,7 +1462,8 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
                     && !isFloodRightOn
                     && !isFloodDelOn
                     && !isFloodEntOn
-                    && !isFloodBspcOn) {
+                    && !isFloodBspcOn
+                    && !isFloodTabOn) {
                         isLThumbWeakPristine = false;
                         tap_code16(G(KC_UP));
                     } else {
@@ -1478,7 +1481,8 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
                     && !isFloodRightOn
                     && !isFloodDelOn
                     && !isFloodEntOn
-                    && !isFloodBspcOn) {
+                    && !isFloodBspcOn
+                    && !isFloodTabOn) {
                         tap_code16(G(KC_UP));
                         isLThumbWeakPristine = false;
                     } else {
@@ -1532,12 +1536,13 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
             if (!(record->event.pressed)) {
                 layer_off_mo_layer(LA_LTHUMBEMO);
                 if (isFloodUpOn
-                    || isFloodDownOn
-                    || isFloodLeftOn
-                    || isFloodRightOn
-                    || isFloodDelOn
-                    || isFloodEntOn
-                    || isFloodBspcOn) {
+                || isFloodDownOn
+                || isFloodLeftOn
+                || isFloodRightOn
+                || isFloodDelOn
+                || isFloodEntOn
+                || isFloodBspcOn
+                || isFloodTabOn) {
                     reverse_weak_layer();
                 }
             }
@@ -1563,12 +1568,14 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
             if (!(record->event.pressed)) {
                 layer_off_mo_layer(LA_LTHUMBDMO);
                 if (isFloodUpOn
-                    || isFloodDownOn
-                    || isFloodLeftOn
-                    || isFloodRightOn
-                    || isFloodDelOn
-                    || isFloodEntOn
-                    || isFloodBspcOn) {
+                || isFloodDownOn
+                || isFloodLeftOn
+                || isFloodRightOn
+                || isFloodDelOn
+                || isFloodEntOn
+                || isFloodBspcOn
+                || isFloodTabOn
+                    ) {
                     reverse_weak_layer();
                 }
             }

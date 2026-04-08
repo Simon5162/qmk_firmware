@@ -60,9 +60,14 @@ void matrix_scan_user(void) {
                     floodTimerX3 = timer_read();
                 }
             }
-        } else if (isFloodUpOn || isFloodDownOn || isFloodLeftOn || isFloodRightOn
-        || isFloodDelOn || isFloodEntOn || isFloodBspcOn
-        || isFloodReverseTabOn || isFloodTabOn) {
+        } else if (isFloodUpOn
+        || isFloodDownOn
+        || isFloodLeftOn
+        || isFloodRightOn
+        || isFloodDelOn
+        || isFloodEntOn
+        || isFloodBspcOn
+        || isFloodTabOn) {
             if (timer_elapsed(floodTimerX3) > floodKeyCodeIntervalX3) {
                 dispatch_flood_keys();
                 floodTimerX3 = timer_read();
@@ -81,9 +86,14 @@ void matrix_scan_user(void) {
                     floodTimerX2 = timer_read();
                 }
             }
-        } else if (isFloodUpOn || isFloodDownOn || isFloodLeftOn || isFloodRightOn
-        || isFloodDelOn || isFloodEntOn || isFloodBspcOn
-        || isFloodReverseTabOn || isFloodTabOn) {
+        } else if (isFloodUpOn
+        || isFloodDownOn
+        || isFloodLeftOn
+        || isFloodRightOn
+        || isFloodDelOn
+        || isFloodEntOn
+        || isFloodBspcOn
+        || isFloodTabOn) {
             if (timer_elapsed(floodTimerX2) > floodKeyCodeIntervalX2) {
                 dispatch_flood_keys();
                 floodTimerX2 = timer_read();
