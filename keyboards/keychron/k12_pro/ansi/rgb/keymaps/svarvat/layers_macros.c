@@ -821,7 +821,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             } else {
                 if (isCtlTabStarted) {
                     isFloodTabOn = false;
-                    register_code16(KC_LSFT);
+                    unregister_code16(KC_LSFT);
                 } else if (isSftTabStarted) {
                     isFloodTabOn = false;
                     unregister_code16(KC_LSFT);
