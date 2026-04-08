@@ -762,10 +762,14 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 if (isCtlTabStarted) {
                     register_code16(KC_LSFT);
                     isFloodTabOn = true;
+                    if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
+                    return false;
                 } else if (isSftTabStarted) {
                     if (isSftTabPristine) isSftTabPristine = false;
                     register_code16(KC_LSFT);
                     isFloodTabOn = true;
+                    if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
+                    return false;
                 } else {
                     isFloodUpOn = true;
                 }
@@ -773,45 +777,57 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 if (isCtlTabStarted) {
                     isFloodTabOn = false;
                     unregister_code16(KC_LSFT);
+                    return false;
                 } else if (isSftTabStarted) {
                     isFloodTabOn = false;
                     unregister_code16(KC_LSFT);
+                    return false;
                 } else {
                     isFloodUpOn = false;
                 }
             }
-            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
+            return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_DOWN:
             if (record->event.pressed) {
                 if (isCtlTabStarted) {
                     isFloodTabOn = true;
+                    if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
+                    return false;
                 } else if (isSftTabStarted) {
                     if (isSftTabPristine) isSftTabPristine = false;
                     unregister_code16(KC_LSFT);
                     isFloodTabOn = true;
+                    if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
+                    return false;
                 } else {
                     isFloodDownOn = true;
                 }
             } else {
                 if (isCtlTabStarted) {
                     isFloodTabOn = false;
+                    return false;
                 } else if (isSftTabStarted) {
                     isFloodTabOn = false;
                     register_code16(KC_LSFT);
+                    return false;
                 } else {
                     isFloodDownOn = false;
                 }
             }
-            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
+            return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_LEFT:
             if (record->event.pressed) {
                 if (isCtlTabStarted) {
                     register_code16(KC_LSFT);
                     isFloodTabOn = true;
+                    if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
+                    return false;
                 } else if (isSftTabStarted) {
                     if (isSftTabPristine) isSftTabPristine = false;
                     register_code16(KC_LSFT);
                     isFloodTabOn = true;
+                    if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
+                    return false;
                 } else if (IS_LAYER_ON(LA_LPINKY)) {
                     register_code16(KC_LCTL);
                     isFloodLeftOn = true;
@@ -822,9 +838,11 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 if (isCtlTabStarted) {
                     isFloodTabOn = false;
                     unregister_code16(KC_LSFT);
+                    return false;
                 } else if (isSftTabStarted) {
                     isFloodTabOn = false;
                     unregister_code16(KC_LSFT);
+                    return false;
                 } else if (IS_LAYER_ON(LA_LPINKY)) {
                     isFloodLeftOn = false;
                     unregister_code16(KC_LCTL);
@@ -832,14 +850,18 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                     isFloodLeftOn = false;
                 }
             }
-            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
+            return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_RGHT:
             if (record->event.pressed) {
                 if (isCtlTabStarted) {
                     isFloodTabOn = true;
+                    if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
+                    return false;
                 } else if (isSftTabStarted) {
                     if (isSftTabPristine) isSftTabPristine = false;
                     isFloodTabOn = true;
+                    if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
+                    return false;
                 } else if (IS_LAYER_ON(LA_LPINKY)) {
                     register_code16(KC_LCTL);
                     isFloodRightOn = true;
@@ -849,8 +871,10 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             } else {
                 if (isCtlTabStarted) {
                     isFloodTabOn = false;
+                    return false;
                 } else if (isSftTabStarted) {
                     isFloodTabOn = false;
+                    return false;
                 } else if (IS_LAYER_ON(LA_LPINKY)) {
                     isFloodRightOn = false;
                     unregister_code16(KC_LCTL);
@@ -858,7 +882,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                     isFloodRightOn = false;
                 }
             }
-            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
+            return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_PGUP:
             if (IS_LAYER_ON(LA_LPINKY) && record->event.pressed) {
                 register_code16(KC_LCTL);
@@ -891,7 +915,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                     isFloodBspcOn = false;
                 }
             }
-            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
+            return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_DEL:
             if (record->event.pressed) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
@@ -908,7 +932,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                     isFloodDelOn = false;
                 }
             }
-            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
+            return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_HOME:
             if (isCtlTabStarted && record->event.pressed) {
                 register_code16(KC_LSFT);
