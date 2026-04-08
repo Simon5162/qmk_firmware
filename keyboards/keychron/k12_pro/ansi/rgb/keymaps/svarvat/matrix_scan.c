@@ -39,24 +39,7 @@ static void dispatch_flood_keys(void) {
     if (isFloodDelOn)   tap_code16(KC_DEL);
     if (isFloodEntOn)   tap_code16(KC_ENT);
     if (isFloodBspcOn)  tap_code16(KC_BSPC);
-    if (isFloodReverseTabOn) {
-        if (isCtlTabStarted) {
-            register_code16(KC_LSFT);
-            tap_code16(KC_TAB);
-            unregister_code16(KC_LSFT);
-        } else {
-            tap_code16(KC_TAB);
-        }
-    }
-    if (isFloodTabOn) {
-        if (isSftTabStarted) {
-            unregister_code16(KC_LSFT);
-            tap_code16(KC_TAB);
-            register_code16(KC_LSFT);
-        } else {
-            tap_code16(KC_TAB);
-        }
-    }
+    if (isFloodTabOn)   tap_code16(KC_TAB);
 }
 
 void matrix_scan_user(void) {

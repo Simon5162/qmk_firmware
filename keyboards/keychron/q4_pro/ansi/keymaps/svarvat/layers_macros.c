@@ -23,7 +23,6 @@ bool isFloodDelOn = false;
 bool isFloodEntOn = false;
 bool isFloodBspcOn = false;
 bool isFloodTabOn = false;
-bool isFloodReverseTabOn = false;
 bool isMuteKeysEnabled = false;
 bool isWeakLaMouseStarted = false;
 bool isMouseBtn1HoldStarted = false;
@@ -715,6 +714,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 isFloodDelOn = false;
                 isFloodEntOn = false;
                 isFloodBspcOn = false;
+                isFloodTabOn = false;
                 inMemoryPreviousWeakLayer = 0;
             }
             return false;
@@ -761,90 +761,104 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isCtlTabStarted) {
                     register_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    unregister_code16(KC_LSFT);
-                    return false;
+                    isFloodTabOn = true;
                 } else if (isSftTabStarted) {
-                    if (isSftTabPristine) {
-                        isSftTabPristine = false;
-                    }
+                    if (isSftTabPristine) isSftTabPristine = false;
                     register_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    unregister_code16(KC_LSFT);
-                    return false;
+                    isFloodTabOn = true;
+                } else {
+                    isFloodUpOn = true;
                 }
-                isFloodUpOn = true;
             } else {
-                isFloodUpOn = false;
+                if (isCtlTabStarted) {
+                    isFloodTabOn = false;
+                    unregister_code16(KC_LSFT);
+                } else if (isSftTabStarted) {
+                    isFloodTabOn = false;
+                    unregister_code16(KC_LSFT);
+                } else {
+                    isFloodUpOn = false;
+                }
             }
-            return true;
+            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
         case KC_DOWN:
             if (record->event.pressed) {
                 if (isCtlTabStarted) {
-                    tap_code16(KC_TAB);
-                    return false;
+                    isFloodTabOn = true;
                 } else if (isSftTabStarted) {
-                    if (isSftTabPristine) {
-                        unregister_code16(KC_LSFT);
-                        isSftTabPristine = false;
-                    }
-                    tap_code16(KC_TAB);
-                    return false;
+                    if (isSftTabPristine) isSftTabPristine = false;
+                    unregister_code16(KC_LSFT);
+                    isFloodTabOn = true;
+                } else {
+                    isFloodDownOn = true;
                 }
-                isFloodDownOn = true;
             } else {
-                isFloodDownOn = false;
+                if (isCtlTabStarted) {
+                    isFloodTabOn = false;
+                } else if (isSftTabStarted) {
+                    isFloodTabOn = false;
+                    register_code16(KC_LSFT);
+                } else {
+                    isFloodDownOn = false;
+                }
             }
-            return true;
+            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
         case KC_LEFT:
             if (record->event.pressed) {
-                 if (isCtlTabStarted) {
+                if (isCtlTabStarted) {
                     register_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    unregister_code16(KC_LSFT);
-                    return false;
+                    isFloodTabOn = true;
                 } else if (isSftTabStarted) {
-                    if (isSftTabPristine) {
-                        isSftTabPristine = false;
-                    }
+                    if (isSftTabPristine) isSftTabPristine = false;
                     register_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    unregister_code16(KC_LSFT);
-                    return false;
+                    isFloodTabOn = true;
                 } else if (IS_LAYER_ON(LA_LPINKY)) {
                     register_code16(KC_LCTL);
-                    tap_code16(KC_LEFT);
-                    unregister_code16(KC_LCTL);
-                    return false;
+                    isFloodLeftOn = true;
+                } else {
+                    isFloodLeftOn = true;
                 }
-                isFloodLeftOn = true;
             } else {
-                isFloodLeftOn = false;
+                if (isCtlTabStarted) {
+                    isFloodTabOn = false;
+                    register_code16(KC_LSFT);
+                } else if (isSftTabStarted) {
+                    isFloodTabOn = false;
+                    unregister_code16(KC_LSFT);
+                } else if (IS_LAYER_ON(LA_LPINKY)) {
+                    isFloodLeftOn = false;
+                    unregister_code16(KC_LCTL);
+                } else {
+                    isFloodLeftOn = false;
+                }
             }
-            return true;
+            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
         case KC_RGHT:
             if (record->event.pressed) {
                 if (isCtlTabStarted) {
-                    tap_code16(KC_TAB);
-                    return false;
+                    isFloodTabOn = true;
                 } else if (isSftTabStarted) {
-                    if (isSftTabPristine) {
-                        unregister_code16(KC_LSFT);
-                        isSftTabPristine = false;
-                    }
-                    tap_code16(KC_TAB);
-                    return false;
+                    if (isSftTabPristine) isSftTabPristine = false;
+                    isFloodTabOn = true;
                 } else if (IS_LAYER_ON(LA_LPINKY)) {
                     register_code16(KC_LCTL);
-                    tap_code16(KC_RGHT);
-                    unregister_code16(KC_LCTL);
-                    return false;
+                    isFloodRightOn = true;
+                } else {
+                    isFloodRightOn = true;
                 }
-                isFloodRightOn = true;
             } else {
-                isFloodRightOn = false;
+                if (isCtlTabStarted) {
+                    isFloodTabOn = false;
+                } else if (isSftTabStarted) {
+                    isFloodTabOn = false;
+                } else if (IS_LAYER_ON(LA_LPINKY)) {
+                    isFloodRightOn = false;
+                    unregister_code16(KC_LCTL);
+                } else {
+                    isFloodRightOn = false;
+                }
             }
-            return true;
+            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
         case KC_PGUP:
             if (IS_LAYER_ON(LA_LPINKY) && record->event.pressed) {
                 register_code16(KC_LCTL);
@@ -862,21 +876,39 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             }
             return true;
         case KC_BSPC:
-            if (IS_LAYER_ON(LA_LPINKY) && record->event.pressed) {
-                register_code16(KC_LCTL);
-                tap_code16(KC_BSPC);
-                unregister_code16(KC_LCTL);
-                return false;
+            if (record->event.pressed) {
+                if (IS_LAYER_ON(LA_LPINKY)) {
+                    register_code16(KC_LCTL);
+                    isFloodBspcOn = true;
+                } else {
+                    isFloodBspcOn = true;
+                }
+            } else {
+                if (IS_LAYER_ON(LA_LPINKY)) {
+                    isFloodBspcOn = false;
+                    unregister_code16(KC_LCTL);
+                } else {
+                    isFloodBspcOn = false;
+                }
             }
-            return true;
+            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
         case KC_DEL:
-            if (IS_LAYER_ON(LA_LPINKY) && record->event.pressed) {
-                register_code16(KC_LCTL);
-                tap_code16(KC_DEL);
-                unregister_code16(KC_LCTL);
-                return false;
+            if (record->event.pressed) {
+                if (IS_LAYER_ON(LA_LPINKY)) {
+                    register_code16(KC_LCTL);
+                    isFloodDelOn = true;
+                } else {
+                    isFloodDelOn = true;
+                }
+            } else {
+                if (IS_LAYER_ON(LA_LPINKY)) {
+                    isFloodDelOn = false;
+                    unregister_code16(KC_LCTL);
+                } else {
+                    isFloodDelOn = false;
+                }
             }
-            return true;
+            return !IS_LAYER_ON(LA_LTHUMBEMO) && !IS_LAYER_ON(LA_LTHUMBDMO);
         case KC_HOME:
             if (isCtlTabStarted && record->event.pressed) {
                 register_code16(KC_LSFT);
@@ -929,6 +961,7 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
                 isFloodDelOn = false;
                 isFloodEntOn = false;
                 isFloodBspcOn = false;
+                isFloodTabOn = false;
                 inMemoryPreviousWeakLayer = 0;
             }
             return false;
@@ -1510,75 +1543,11 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
             }
             return false;
         case KC_UP:
-            if (record->event.pressed) {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    register_code16(KC_LSFT);
-                    register_code16(KC_TAB);
-                    return false;
-                }
-                reverse_weak_layer();
-            } else {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    unregister_code16(KC_TAB);
-                    unregister_code16(KC_LSFT);
-                    return false;
-                }
-            }
-            return true;
         case KC_DOWN:
-            if (record->event.pressed) {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    register_code16(KC_TAB);
-                    return false;
-                }
-                reverse_weak_layer();
-            } else {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    unregister_code16(KC_TAB);
-                    return false;
-                }
-            }
-            return true;
         case KC_LEFT:
-            if (record->event.pressed) {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    register_code16(KC_LSFT);
-                    register_code16(KC_TAB);
-                    return false;
-                }
-                reverse_weak_layer();
-            } else {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    unregister_code16(KC_TAB);
-                    unregister_code16(KC_LSFT);
-                    return false;
-                }
-            }
-            return true;
         case KC_RIGHT:
-            if (record->event.pressed) {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    register_code16(KC_TAB);
-                    return false;
-                }
-                reverse_weak_layer();
-            } else {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    unregister_code16(KC_TAB);
-                    return false;
-                }
-            }
-            return true;
         case KC_DEL:
-            if (record->event.pressed) {
-                reverse_weak_layer();
-            }
-            return true;
         case KC_ENT:
-            if (record->event.pressed) {
-                reverse_weak_layer();
-            }
-            return true;
         case KC_BSPC:
             if (record->event.pressed) {
                 reverse_weak_layer();
@@ -1605,83 +1574,14 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
             }
             return false;
         case KC_UP:
-            if (record->event.pressed) {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    register_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    unregister_code16(KC_LSFT);
-                    return false;
-                }
-                reverse_weak_layer();
-            } else {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    register_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    unregister_code16(KC_LSFT);
-                    return false;
-                }
-            }
-            return true;
         case KC_DOWN:
-            if (record->event.pressed) {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    return false;
-                }
-                reverse_weak_layer();
-            } else {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    return false;
-                }
-            }
-            return true;
         case KC_LEFT:
-            if (record->event.pressed) {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    register_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    unregister_code16(KC_LSFT);
-                    return false;
-                }
-                reverse_weak_layer();
-            } else {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    register_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    unregister_code16(KC_LSFT);
-                    return false;
-                }
-            }
-            return true;
         case KC_RIGHT:
+        case KC_DEL:
+        case KC_ENT:
+        case KC_BSPC:
             if (record->event.pressed) {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    return false;
-                }
                 reverse_weak_layer();
-            } else {
-                if (isCtlTabStarted || isSftTabStarted) {
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    tap_code16(KC_TAB);
-                    return false;
-                }
             }
             return true;
         default:
