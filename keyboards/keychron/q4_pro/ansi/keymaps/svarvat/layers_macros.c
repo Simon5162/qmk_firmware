@@ -656,7 +656,14 @@ bool processKeycodeIfLThumbEStrong(uint16_t keycode, keyrecord_t* record) {
             return false;
         case KC_LALT:
         case KC_LSFT:
+        case KC_LCTL:
+        case KC_LGUI:
+        case KC_RALT:
+        case KC_RSFT:
+        case KC_RCTL:
+        case KC_RGUI:
         case MA_LPINKY:
+        case MA_LTHUMB:
         case MO(LA_RTHUMB):
             if (editModeLThumbStrongStarted) {
                 unregister_mods(MOD_MASK_CTRL);
@@ -692,7 +699,14 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
             return false;
         case KC_LALT:
         case KC_LSFT:
+        case KC_LCTL:
+        case KC_LGUI:
+        case KC_RALT:
+        case KC_RSFT:
+        case KC_RCTL:
+        case KC_RGUI:
         case MA_LPINKY:
+        case MA_LTHUMB:
         case MO(LA_RTHUMB):
             if (editModeLThumbStrongStarted) {
                 unregister_mods(MOD_MASK_CTRL);
@@ -1631,3 +1645,4 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
             return true;
     }
 }
+
