@@ -157,7 +157,7 @@ bool switch_ctl_tab_off(uint16_t keycode) {
     }
     return true;
 }
-bool switch_ctl_word_off(uint16_t keycode) {
+void switch_ctl_word_off(uint16_t keycode) {
     if (isCtlWordStarted
     && (keycode != KC_LEFT)
     && (keycode != KC_RIGHT)
@@ -165,11 +165,7 @@ bool switch_ctl_word_off(uint16_t keycode) {
     && (keycode != MA_LTHUMBD)) {
         isCtlWordStarted = false;
         unregister_mods(MOD_MASK_CTRL);
-        layer_off(LA_LTHUMB);
-        layer_off_mo_layer(LA_LTHUMBDMO);
-        layer_off_mo_layer(LA_LTHUMBEMO);
     }
-    return true;
 }
 bool switch_alt_tab_off(uint16_t keycode) {
     if (isAltTabStarted
@@ -718,7 +714,7 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
-    if (!switch_ctl_word_off(keycode)) {return false;}
+    switch_ctl_word_off(keycode);
     if (!switch_ctl_tab_off(keycode)) {return false;}
     if (!switch_alt_tab_off(keycode)) {return false;}
     if (!switch_sht_tab_off(keycode)) {return false;}
