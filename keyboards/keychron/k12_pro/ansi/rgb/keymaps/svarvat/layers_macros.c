@@ -148,6 +148,7 @@ bool switch_ctl_tab_off(uint16_t keycode) {
     && (keycode != KC_LSFT)) {
         isCtlTabStarted = false;
         unregister_mods(MOD_MASK_CTRL);
+        unregister_mods(MOD_MASK_SHIFT);
         layer_off(LA_LTHUMB);
         layer_off_mo_layer(LA_LTHUMBDMO);
         layer_off_mo_layer(LA_LTHUMBEMO);
@@ -165,6 +166,7 @@ void switch_ctl_word_off(uint16_t keycode) {
     && (keycode != MA_LTHUMBD)) {
         isCtlWordStarted = false;
         unregister_mods(MOD_MASK_CTRL);
+        unregister_mods(MOD_MASK_SHIFT);
     }
 }
 bool switch_alt_tab_off(uint16_t keycode) {
@@ -182,6 +184,7 @@ bool switch_alt_tab_off(uint16_t keycode) {
         isAltTabStarted = false;
         isLThumbWeakPristine = true;
         unregister_code16(KC_LALT);
+        unregister_mods(MOD_MASK_SHIFT);
         layer_off(LA_LTHUMB);
         layer_off_mo_layer(LA_LTHUMBDMO);
         layer_off_mo_layer(LA_LTHUMBEMO);
@@ -981,6 +984,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
+    switch_ctl_word_off(keycode);
     if (!switch_ctl_tab_off(keycode)) {return false;}
     if (!switch_alt_tab_off(keycode)) {return false;}
     if (!switch_sht_tab_off(keycode)) {return false;}
@@ -1159,6 +1163,7 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
     return true;
 }
 bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
+    switch_ctl_word_off(keycode);
     if (!switch_ctl_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
@@ -1238,6 +1243,7 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
+    switch_ctl_word_off(keycode);
     if (!switch_ctl_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
@@ -1317,6 +1323,7 @@ bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
+    switch_ctl_word_off(keycode);
     if (!switch_ctl_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
@@ -1396,6 +1403,7 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
+    switch_ctl_word_off(keycode);
     if (!switch_ctl_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
@@ -1472,6 +1480,7 @@ bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
+    switch_ctl_word_off(keycode);
     if (!switch_ctl_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
