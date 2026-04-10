@@ -8,10 +8,6 @@ bool isAltTabStarted = false;
 bool isSftTabStarted = false;
 bool isCtlWordStarted = false;
 bool isCapswordStarted = false;
-bool isMouseLeftOn = false;
-bool isMouseRightOn = false;
-bool isMouseUpOn = false;
-bool isMouseDownOn = false;
 bool isScrollLeftOn = false;
 bool isScrollRightOn = false;
 bool isScrollUpOn = false;
@@ -72,10 +68,10 @@ void layer_off_lmouse(void) {
     isScrollUpOn = false;
     isScrollDownOn = false;
     isScrollRightOn = false;
-    isMouseDownOn = false;
-    isMouseUpOn = false;
-    isMouseRightOn = false;
-    isMouseLeftOn = false;
+    isFloodDownOn = false;
+    isFloodUpOn = false;
+    isFloodRightOn = false;
+    isFloodLeftOn = false;
     if (isMouseBtn1HoldStarted) {
         unregister_code16(KC_MS_BTN1);
         isMouseBtn1HoldStarted = false;
@@ -492,10 +488,10 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                     tap_code16(KC_TAB);
                     register_code16(KC_LSFT);
                 } else {
-                    isMouseDownOn = true;
+                    isFloodDownOn = true;
                 }
             } else {
-                isMouseDownOn = false;
+                isFloodDownOn = false;
             }
             return false;
         case MA_MS_UP:
@@ -505,10 +501,10 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                 } else if (isSftTabStarted) {
                     tap_code16(KC_TAB);
                 } else {
-                    isMouseUpOn = true;
+                    isFloodUpOn = true;
                 }
             } else {
-                isMouseUpOn = false;
+                isFloodUpOn = false;
             }
             return false;
         case MA_MS_LEFT:
@@ -518,10 +514,10 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                 } else if (isSftTabStarted) {
                     tap_code16(KC_TAB);
                 } else {
-                    isMouseLeftOn = true;
+                    isFloodLeftOn = true;
                 }
             } else {
-                isMouseLeftOn = false;
+                isFloodLeftOn = false;
             }
             return false;
         case MA_MS_RIGHT:
@@ -533,10 +529,10 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                     tap_code16(KC_TAB);
                     register_code16(KC_LSFT);
                 } else {
-                    isMouseRightOn = true;
+                    isFloodRightOn = true;
                 }
             } else {
-                isMouseRightOn = false;
+                isFloodRightOn = false;
             }
             return false;
         case MA_MS_BTN1_HOLD:
@@ -549,7 +545,7 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                     isMouseBtn1HoldStarted = true;
                 }
             } else {
-                isMouseRightOn = false;
+                isFloodRightOn = false;
             }
             return false;
         default:
@@ -995,10 +991,6 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
                 isScrollUpOn = false;
                 isScrollDownOn = false;
                 isScrollRightOn = false;
-                isMouseDownOn = false;
-                isMouseUpOn = false;
-                isMouseRightOn = false;
-                isMouseLeftOn = false;
                 isFloodUpOn = false;
                 isFloodDownOn = false;
                 isFloodLeftOn = false;
@@ -1018,10 +1010,6 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
                 isScrollUpOn = false;
                 isScrollDownOn = false;
                 isScrollRightOn = false;
-                isMouseDownOn = false;
-                isMouseUpOn = false;
-                isMouseRightOn = false;
-                isMouseLeftOn = false;
                 isFloodUpOn = false;
                 isFloodDownOn = false;
                 isFloodLeftOn = false;
@@ -1423,10 +1411,6 @@ bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
             if (IS_LAYER_ON(LA_LTHUMBMS)) {
                 if (record->event.pressed) {
                     if (isLThumbWeakPristine
-                    && !isMouseLeftOn
-                    && !isMouseRightOn
-                    && !isMouseUpOn
-                    && !isMouseDownOn
                     && !isScrollLeftOn
                     && !isScrollRightOn
                     && !isScrollUpOn
@@ -1494,10 +1478,6 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
             if (IS_LAYER_ON(LA_LTHUMBMS)) {
                 if (record->event.pressed) {
                     if (isLThumbWeakPristine
-                    && !isMouseLeftOn
-                    && !isMouseRightOn
-                    && !isMouseUpOn
-                    && !isMouseDownOn
                     && !isScrollLeftOn
                     && !isScrollRightOn
                     && !isScrollUpOn

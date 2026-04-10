@@ -49,8 +49,8 @@ void matrix_scan_user(void) {
     }
     if (IS_LAYER_ON(LA_LTHUMBEMO)) {
         if (IS_LAYER_ON(LA_MOUSE)) {
-            int8_t mx = isMouseRightOn ? 8 : (isMouseLeftOn ? -8 : 0);
-            int8_t my = isMouseDownOn  ? 8 : (isMouseUpOn   ? -8 : 0);
+            int8_t mx = isFloodRightOn ? 8 : (isFloodLeftOn ? -8 : 0);
+            int8_t my = isFloodDownOn  ? 8 : (isFloodUpOn   ? -8 : 0);
             if (mx || my) move_mouse(mx, my);
 
             if (isScrollDownOn || isScrollUpOn || isScrollLeftOn || isScrollRightOn) {
@@ -75,8 +75,8 @@ void matrix_scan_user(void) {
         }
     } else if (IS_LAYER_ON(LA_LTHUMBDMO)) {
         if (IS_LAYER_ON(LA_MOUSE)) {
-            int8_t mx = isMouseRightOn ? 3 : (isMouseLeftOn ? -3 : 0);
-            int8_t my = isMouseDownOn  ? 3 : (isMouseUpOn   ? -3 : 0);
+            int8_t mx = isFloodRightOn ? 3 : (isFloodLeftOn ? -3 : 0);
+            int8_t my = isFloodDownOn  ? 3 : (isFloodUpOn   ? -3 : 0);
             if (mx || my) move_mouse(mx, my);
 
             if (isScrollDownOn || isScrollUpOn || isScrollLeftOn || isScrollRightOn) {
@@ -100,10 +100,10 @@ void matrix_scan_user(void) {
             }
         }
     } else if (IS_LAYER_ON(LA_MOUSE)) {
-        if (isMouseRightOn || isMouseLeftOn || isMouseDownOn || isMouseUpOn) {
+        if (isFloodRightOn || isFloodLeftOn || isFloodDownOn || isFloodUpOn) {
             if (timer_elapsed(floodTimerX1) > floodMouseIntervalX1) {
-                move_mouse(isMouseRightOn ? 1 : (isMouseLeftOn ? -1 : 0),
-                           isMouseDownOn  ? 1 : (isMouseUpOn   ? -1 : 0));
+                move_mouse(isFloodRightOn ? 1 : (isFloodLeftOn ? -1 : 0),
+                           isFloodDownOn  ? 1 : (isFloodUpOn   ? -1 : 0));
                 floodTimerX1 = timer_read();
             }
         }
