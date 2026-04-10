@@ -6,6 +6,7 @@ bool editModeLThumbStrongStarted = false;
 bool isCtlTabStarted = false;
 bool isAltTabStarted = false;
 bool isSftTabStarted = false;
+bool isCtlWordStarted = false;
 bool isCapswordStarted = false;
 bool isMouseLeftOn = false;
 bool isMouseRightOn = false;
@@ -147,9 +148,26 @@ bool switch_ctl_tab_off(uint16_t keycode) {
     && (keycode != KC_LSFT)) {
         isCtlTabStarted = false;
         unregister_mods(MOD_MASK_CTRL);
+        layer_off(LA_LTHUMB);
+        layer_off_mo_layer(LA_LTHUMBDMO);
+        layer_off_mo_layer(LA_LTHUMBEMO);
         if (keycode == KC_ENT) {
             return false;
         }
+    }
+    return true;
+}
+bool switch_ctl_word_off(uint16_t keycode) {
+    if (isCtlWordStarted
+    && (keycode != KC_LEFT)
+    && (keycode != KC_RIGHT)
+    && (keycode != MA_LTHUMBE)
+    && (keycode != MA_LTHUMBD)) {
+        isCtlWordStarted = false;
+        unregister_mods(MOD_MASK_CTRL);
+        layer_off(LA_LTHUMB);
+        layer_off_mo_layer(LA_LTHUMBDMO);
+        layer_off_mo_layer(LA_LTHUMBEMO);
     }
     return true;
 }
@@ -700,6 +718,7 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
+    if (!switch_ctl_word_off(keycode)) {return false;}
     if (!switch_ctl_tab_off(keycode)) {return false;}
     if (!switch_alt_tab_off(keycode)) {return false;}
     if (!switch_sht_tab_off(keycode)) {return false;}
@@ -829,6 +848,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                     if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
                     return false;
                 } else if (IS_LAYER_ON(LA_LPINKY)) {
+                    isCtlWordStarted = true;
                     register_code16(KC_LCTL);
                     isFloodLeftOn = true;
                 } else {
@@ -846,6 +866,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 } else if (IS_LAYER_ON(LA_LPINKY)) {
                     isFloodLeftOn = false;
                     unregister_code16(KC_LCTL);
+                    isCtlWordStarted = false;
                 } else {
                     isFloodLeftOn = false;
                 }
@@ -863,6 +884,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                     if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
                     return false;
                 } else if (IS_LAYER_ON(LA_LPINKY)) {
+                    isCtlWordStarted = true;
                     register_code16(KC_LCTL);
                     isFloodRightOn = true;
                 } else {
@@ -878,6 +900,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 } else if (IS_LAYER_ON(LA_LPINKY)) {
                     isFloodRightOn = false;
                     unregister_code16(KC_LCTL);
+                    isCtlWordStarted = false;
                 } else {
                     isFloodRightOn = false;
                 }
