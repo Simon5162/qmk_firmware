@@ -1580,14 +1580,15 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
                     layer_on(LA_LTHUMBESTRONG);
                 }
                 layer_off_mo_layer(LA_LTHUMBEMO);
-                if (isFloodUpOn
+                if (!isWeakLaMouseStarted &&
+                (isFloodUpOn
                 || isFloodDownOn
                 || isFloodLeftOn
                 || isFloodRightOn
                 || isFloodDelOn
                 || isFloodEntOn
                 || isFloodBspcOn
-                || isFloodTabOn) {
+                || isFloodTabOn)) {
                     reverse_weak_layer();
                 }
             }
@@ -1617,15 +1618,15 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
                     layer_on(LA_LTHUMBDSTRONG);
                 }
                 layer_off_mo_layer(LA_LTHUMBDMO);
-                if (isFloodUpOn
+                if (!isWeakLaMouseStarted &&
+                (isFloodUpOn
                 || isFloodDownOn
                 || isFloodLeftOn
                 || isFloodRightOn
                 || isFloodDelOn
                 || isFloodEntOn
                 || isFloodBspcOn
-                || isFloodTabOn
-                    ) {
+                || isFloodTabOn)) {
                     reverse_weak_layer();
                 }
             }
