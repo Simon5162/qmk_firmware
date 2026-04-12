@@ -932,6 +932,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
         case KC_BSPC:
             if (record->event.pressed) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
+                    isCtlWordStarted = true;
                     register_code16(KC_LCTL);
                     isFloodBspcOn = true;
                 } else {
@@ -941,6 +942,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
                     isFloodBspcOn = false;
                     unregister_code16(KC_LCTL);
+                    isCtlWordStarted = false;
                 } else {
                     isFloodBspcOn = false;
                 }
@@ -949,6 +951,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
         case KC_DEL:
             if (record->event.pressed) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
+                    isCtlWordStarted = true;
                     register_code16(KC_LCTL);
                     isFloodDelOn = true;
                 } else {
@@ -958,6 +961,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
                     isFloodDelOn = false;
                     unregister_code16(KC_LCTL);
+                    isCtlWordStarted = false;
                 } else {
                     isFloodDelOn = false;
                 }
