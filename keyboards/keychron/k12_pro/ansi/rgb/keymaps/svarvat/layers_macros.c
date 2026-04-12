@@ -1422,48 +1422,28 @@ bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
             }
             return true;
         case MA_LTHUMBE:
-            if (IS_LAYER_ON(LA_LTHUMBMS)) {
-                if (record->event.pressed) {
-                    if (isLThumbWeakPristine
-                    && !isScrollLeftOn
-                    && !isScrollRightOn
-                    && !isScrollUpOn
-                    && !isScrollDownOn
-                    && !isFloodUpOn
-                    && !isFloodDownOn
-                    && !isFloodLeftOn
-                    && !isFloodRightOn
-                    && !isFloodDelOn
-                    && !isFloodEntOn
-                    && !isFloodBspcOn
-                    && !isFloodTabOn) {
-                        isLThumbWeakPristine = false;
-                        tap_code16(C(KC_Q));
-                    } else {
-                        isLThumbWeakPristine = true;
-                    }
+            if (record->event.pressed) {
+                if (isLThumbWeakPristine
+                && !isFloodUpOn
+                && !isFloodDownOn
+                && !isFloodLeftOn
+                && !isFloodRightOn
+                && !isFloodDelOn
+                && !isFloodEntOn
+                && !isFloodBspcOn
+                && !isFloodTabOn
+                && !isScrollLeftOn
+                && !isScrollRightOn
+                && !isScrollUpOn
+                && !isScrollDownOn) {
+                    tap_code16(C(KC_Q));
+                    isLThumbWeakPristine = false;
+                    return false;
+                } else {
+                    isLThumbWeakPristine = true;
                 }
-                return true;
-            } else {
-                if (record->event.pressed) {
-                    layer_on(LA_LTHUMBEMO);
-                    if (isLThumbWeakPristine
-                    && !isFloodUpOn
-                    && !isFloodDownOn
-                    && !isFloodLeftOn
-                    && !isFloodRightOn
-                    && !isFloodDelOn
-                    && !isFloodEntOn
-                    && !isFloodBspcOn
-                    && !isFloodTabOn) {
-                        tap_code16(C(KC_Q));
-                        isLThumbWeakPristine = false;
-                    } else {
-                        isLThumbWeakPristine = true;
-                    }
-                }
-                return false;
             }
+            return true;
         case MA_LTHUMBD:
         case MA_LTHUMB1:
         case MA_LTHUMB2:
@@ -1489,48 +1469,28 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
             }
             return true;
         case MA_LTHUMBD:
-            if (IS_LAYER_ON(LA_LTHUMBMS)) {
-                if (record->event.pressed) {
-                    if (isLThumbWeakPristine
-                    && !isScrollLeftOn
-                    && !isScrollRightOn
-                    && !isScrollUpOn
-                    && !isScrollDownOn
-                    && !isFloodUpOn
-                    && !isFloodDownOn
-                    && !isFloodLeftOn
-                    && !isFloodRightOn
-                    && !isFloodDelOn
-                    && !isFloodEntOn
-                    && !isFloodBspcOn
-                    && !isFloodTabOn) {
-                        isLThumbWeakPristine = false;
-                        tap_code16(G(KC_UP));
-                    } else {
-                        isLThumbWeakPristine = true;
-                    }
+            if (record->event.pressed) {
+                if (isLThumbWeakPristine
+                && !isFloodUpOn
+                && !isFloodDownOn
+                && !isFloodLeftOn
+                && !isFloodRightOn
+                && !isFloodDelOn
+                && !isFloodEntOn
+                && !isFloodBspcOn
+                && !isFloodTabOn
+                && !isScrollLeftOn
+                && !isScrollRightOn
+                && !isScrollUpOn
+                && !isScrollDownOn) {
+                    tap_code16(G(KC_UP));
+                    isLThumbWeakPristine = false;
+                    return false;
+                } else {
+                    isLThumbWeakPristine = true;
                 }
-                return true;
-            } else {
-                if (record->event.pressed) {
-                    layer_on(LA_LTHUMBDMO);
-                    if (isLThumbWeakPristine
-                    && !isFloodUpOn
-                    && !isFloodDownOn
-                    && !isFloodLeftOn
-                    && !isFloodRightOn
-                    && !isFloodDelOn
-                    && !isFloodEntOn
-                    && !isFloodBspcOn
-                    && !isFloodTabOn) {
-                        tap_code16(G(KC_UP));
-                        isLThumbWeakPristine = false;
-                    } else {
-                        isLThumbWeakPristine = true;
-                    }
-                }
-                return false;
             }
+            return true;
         case MA_LTHUMBE:
         case MA_LTHUMB1:
         case MA_LTHUMB2:
