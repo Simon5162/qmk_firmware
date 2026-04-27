@@ -1,5 +1,14 @@
 extern bool process_record_kb_bt(uint16_t keycode, keyrecord_t *record);
 
+extern uint16_t floodKeyCodeIntervalX2;
+extern uint16_t floodKeyCodeIntervalX3;
+extern uint16_t floodScrollIntervalX1;
+extern uint16_t floodScrollIntervalX2;
+extern uint16_t floodScrollIntervalX3;
+extern uint16_t floodMouseIntervalX1;
+extern uint16_t floodMouseIntervalX2;
+extern uint16_t floodMouseIntervalX3;
+
 //bool isDeadKeyCircStarted = false;
 //bool isDeadKeyTremaStarted = false;
 bool editModeLThumbStrongStarted = false;
@@ -32,28 +41,82 @@ static uint16_t bt_history[2] = {BT_HST5, BT_HST6};
 bool bt_wake_pending = false;
 uint32_t bt_wake_timer = 0;
 
-typedef union {
-    uint32_t raw;
-    struct {
-        uint16_t bt_history_0;
-        uint16_t bt_history_1;
-    };
-} user_config_t;
+#define SENS_COUNT      8
+#define BT_HOST_COUNT   6
+#define SENS_IDX_KCI2   0
+#define SENS_IDX_KCI3   1
+#define SENS_IDX_SCI1   2
+#define SENS_IDX_SCI2   3
+#define SENS_IDX_SCI3   4
+#define SENS_IDX_MCI1   5
+#define SENS_IDX_MCI2   6
+#define SENS_IDX_MCI3   7
+
+static const uint16_t default_sensitivity[SENS_COUNT] = {50, 10, 40, 100, 100, 10, 100, 100};
+
+typedef struct {    uint16_t bt_history_0;
+    uint16_t bt_history_1;
+    uint16_t sensitivity[BT_HOST_COUNT][SENS_COUNT];
+} user_config_data_t;
+
+static user_config_data_t user_config_data;
+
+static uint8_t get_bt_index(uint16_t kc) {
+    if (kc >= BT_HST1 && kc <= BT_HST6) return (uint8_t)(kc - BT_HST1);
+    return 0;
+}
+static void load_sensitivity_for_bt(uint8_t bt_idx) {
+    floodKeyCodeIntervalX2 = user_config_data.sensitivity[bt_idx][SENS_IDX_KCI2];
+    floodKeyCodeIntervalX3 = user_config_data.sensitivity[bt_idx][SENS_IDX_KCI3];
+    floodScrollIntervalX1  = user_config_data.sensitivity[bt_idx][SENS_IDX_SCI1];
+    floodScrollIntervalX2  = user_config_data.sensitivity[bt_idx][SENS_IDX_SCI2];
+    floodScrollIntervalX3  = user_config_data.sensitivity[bt_idx][SENS_IDX_SCI3];
+    floodMouseIntervalX1   = user_config_data.sensitivity[bt_idx][SENS_IDX_MCI1];
+    floodMouseIntervalX2   = user_config_data.sensitivity[bt_idx][SENS_IDX_MCI2];
+    floodMouseIntervalX3   = user_config_data.sensitivity[bt_idx][SENS_IDX_MCI3];
+}
+static void adjust_sensitivity(uint8_t sens_idx, bool increase) {
+    uint8_t bt_idx = get_bt_index(bt_history[0]);
+    uint16_t* val = &user_config_data.sensitivity[bt_idx][sens_idx];
+    uint16_t step = (*val > 10) ? 5 : 1;
+    if (increase) {
+        if (*val + step <= 500) *val += step;
+        else *val = 500;
+    } else {
+        if (*val > step) *val -= step;
+        else *val = 1;
+    }
+    load_sensitivity_for_bt(bt_idx);
+    eeconfig_update_user_datablock(&user_config_data);
+}
 void eeconfig_init_user(void) {
-    user_config_t user_config;
-    user_config.bt_history_0 = BT_HST5;
-    user_config.bt_history_1 = BT_HST6;
-    eeconfig_update_user(user_config.raw);
+    user_config_data.bt_history_0 = BT_HST5;
+    user_config_data.bt_history_1 = BT_HST6;
+    for (uint8_t i = 0; i < BT_HOST_COUNT; i++) {
+        for (uint8_t j = 0; j < SENS_COUNT; j++) {
+            user_config_data.sensitivity[i][j] = default_sensitivity[j];
+        }
+    }
+    eeconfig_update_user_datablock(&user_config_data);
 }
 void keyboard_post_init_user(void) {
-    user_config_t user_config;
-    user_config.raw = eeconfig_read_user();
-    if (user_config.bt_history_0 >= BT_HST1 && user_config.bt_history_0 <= BT_HST6) {
-        bt_history[0] = user_config.bt_history_0;
+    eeconfig_read_user_datablock(&user_config_data);
+    if (user_config_data.bt_history_0 < BT_HST1 || user_config_data.bt_history_0 > BT_HST6) {
+        user_config_data.bt_history_0 = BT_HST5;
     }
-    if (user_config.bt_history_1 >= BT_HST1 && user_config.bt_history_1 <= BT_HST6) {
-        bt_history[1] = user_config.bt_history_1;
+    if (user_config_data.bt_history_1 < BT_HST1 || user_config_data.bt_history_1 > BT_HST6) {
+        user_config_data.bt_history_1 = BT_HST6;
     }
+    bt_history[0] = user_config_data.bt_history_0;
+    bt_history[1] = user_config_data.bt_history_1;
+    for (uint8_t i = 0; i < BT_HOST_COUNT; i++) {
+        for (uint8_t j = 0; j < SENS_COUNT; j++) {
+            if (user_config_data.sensitivity[i][j] == 0 || user_config_data.sensitivity[i][j] > 500) {
+                user_config_data.sensitivity[i][j] = default_sensitivity[j];
+            }
+        }
+    }
+    load_sensitivity_for_bt(get_bt_index(bt_history[0]));
 }
 
 void layer_on_lmouse(void) {
@@ -104,10 +167,10 @@ void register_bt_host(uint16_t kc) {
     if (kc == bt_history[0]) return;
     bt_history[1] = bt_history[0];
     bt_history[0] = kc;
-    user_config_t user_config;
-    user_config.bt_history_0 = bt_history[0];
-    user_config.bt_history_1 = bt_history[1];
-    eeconfig_update_user(user_config.raw);
+    user_config_data.bt_history_0 = bt_history[0];
+    user_config_data.bt_history_1 = bt_history[1];
+    eeconfig_update_user_datablock(&user_config_data);
+    load_sensitivity_for_bt(get_bt_index(kc));
     bt_wake_pending = true;
     bt_wake_timer = timer_read32();
 }
@@ -1584,6 +1647,28 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
             return true;
         default:
             return true;
+    }
+}
+bool processKeycodeIfSensitivity(uint16_t keycode, keyrecord_t* record) {
+    if (!record->event.pressed) return true;
+    switch (keycode) {
+        case MA_SENS_KCI2_UP: adjust_sensitivity(SENS_IDX_KCI2, true);  return false;
+        case MA_SENS_KCI2_DN: adjust_sensitivity(SENS_IDX_KCI2, false); return false;
+        case MA_SENS_KCI3_UP: adjust_sensitivity(SENS_IDX_KCI3, true);  return false;
+        case MA_SENS_KCI3_DN: adjust_sensitivity(SENS_IDX_KCI3, false); return false;
+        case MA_SENS_SCI1_UP: adjust_sensitivity(SENS_IDX_SCI1, true);  return false;
+        case MA_SENS_SCI1_DN: adjust_sensitivity(SENS_IDX_SCI1, false); return false;
+        case MA_SENS_SCI2_UP: adjust_sensitivity(SENS_IDX_SCI2, true);  return false;
+        case MA_SENS_SCI2_DN: adjust_sensitivity(SENS_IDX_SCI2, false); return false;
+        case MA_SENS_SCI3_UP: adjust_sensitivity(SENS_IDX_SCI3, true);  return false;
+        case MA_SENS_SCI3_DN: adjust_sensitivity(SENS_IDX_SCI3, false); return false;
+        case MA_SENS_MCI1_UP: adjust_sensitivity(SENS_IDX_MCI1, true);  return false;
+        case MA_SENS_MCI1_DN: adjust_sensitivity(SENS_IDX_MCI1, false); return false;
+        case MA_SENS_MCI2_UP: adjust_sensitivity(SENS_IDX_MCI2, true);  return false;
+        case MA_SENS_MCI2_DN: adjust_sensitivity(SENS_IDX_MCI2, false); return false;
+        case MA_SENS_MCI3_UP: adjust_sensitivity(SENS_IDX_MCI3, true);  return false;
+        case MA_SENS_MCI3_DN: adjust_sensitivity(SENS_IDX_MCI3, false); return false;
+        default: return true;
     }
 }
 bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {

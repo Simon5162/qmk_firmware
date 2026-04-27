@@ -50,6 +50,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (IS_LAYER_ON(LA_CAPSLOCK)) {
         if (!processKeycodeIfLCapslock(keycode, record)) {return false;}
     }
+    if (!processKeycodeIfSensitivity(keycode, record)) {return false;}
     return processKeycodeIfLBase(keycode, record);
 
 }
