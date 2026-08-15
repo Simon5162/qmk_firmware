@@ -1442,6 +1442,7 @@ bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
                 && !isScrollDownOn) {
                     tap_code16(C(KC_Q));
                     isLThumbWeakPristine = false;
+                    layer_off(LA_LTHUMBESTRONG);
                     return false;
                 } else {
                     isLThumbWeakPristine = true;
@@ -1489,6 +1490,7 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
                 && !isScrollDownOn) {
                     tap_code16(G(KC_UP));
                     isLThumbWeakPristine = false;
+                    layer_off(LA_LTHUMBDSTRONG);
                     return false;
                 } else {
                     isLThumbWeakPristine = true;
@@ -1541,22 +1543,6 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
         case MA_LTHUMBE:
             if (!(record->event.pressed)) {
                 if (!isWeakLaMouseStarted) {
-                    if (isLThumbMoPristine
-                    && isLThumbWeakPristine
-                    && !isFloodUpOn
-                    && !isFloodDownOn
-                    && !isFloodLeftOn
-                    && !isFloodRightOn
-                    && !isFloodDelOn
-                    && !isFloodEntOn
-                    && !isFloodBspcOn
-                    && !isFloodTabOn
-                    && !isScrollLeftOn
-                    && !isScrollRightOn
-                    && !isScrollUpOn
-                    && !isScrollDownOn) {
-                        layer_on(LA_LTHUMBESTRONG);
-                    }
                     if (isFloodUpOn
                     || isFloodDownOn
                     || isFloodLeftOn
@@ -1564,8 +1550,16 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
                     || isFloodDelOn
                     || isFloodEntOn
                     || isFloodBspcOn
-                    || isFloodTabOn) {
+                    || isFloodTabOn
+                    || isScrollLeftOn
+                    || isScrollRightOn
+                    || isScrollUpOn
+                    || isScrollDownOn) {
                         reverse_weak_layer();
+                    } else {
+                        if (isLThumbMoPristine && isLThumbWeakPristine) {
+                            layer_on(LA_LTHUMBESTRONG);
+                        }
                     }
                 }
                 layer_off_mo_layer(LA_LTHUMBEMO);
@@ -1593,22 +1587,6 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
         case MA_LTHUMBD:
             if (!(record->event.pressed)) {
                 if (!isWeakLaMouseStarted) {
-                    if (isLThumbMoPristine
-                    && isLThumbWeakPristine
-                    && !isFloodUpOn
-                    && !isFloodDownOn
-                    && !isFloodLeftOn
-                    && !isFloodRightOn
-                    && !isFloodDelOn
-                    && !isFloodEntOn
-                    && !isFloodBspcOn
-                    && !isFloodTabOn
-                    && !isScrollLeftOn
-                    && !isScrollRightOn
-                    && !isScrollUpOn
-                    && !isScrollDownOn) {
-                        layer_on(LA_LTHUMBDSTRONG);
-                    }
                     if (isFloodUpOn
                     || isFloodDownOn
                     || isFloodLeftOn
@@ -1616,8 +1594,16 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
                     || isFloodDelOn
                     || isFloodEntOn
                     || isFloodBspcOn
-                    || isFloodTabOn) {
+                    || isFloodTabOn
+                    || isScrollLeftOn
+                    || isScrollRightOn
+                    || isScrollUpOn
+                    || isScrollDownOn) {
                         reverse_weak_layer();
+                    } else {
+                        if (isLThumbMoPristine && isLThumbWeakPristine) {
+                            layer_on(LA_LTHUMBDSTRONG);
+                        }
                     }
                 }
                 layer_off_mo_layer(LA_LTHUMBDMO);
