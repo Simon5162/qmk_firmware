@@ -6,6 +6,18 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         if (!processKeycodeIfMuteKeysEnabled(keycode, record)) {return false;}
     }
     if (IS_LAYER_ON(LA_LTHUMB) || IS_LAYER_ON(LA_LTHUMBMS) || isAltTabStarted) {
+        if (isCtlTabStarted) {
+            if (!processKeycodeIfCtlTab(keycode)) {return false;}
+        }
+        if (isAltTabStarted) {
+            if (!processKeycodeIfAltTab(keycode)) {return false;}
+        }
+        if (isSftTabStarted) {
+            if (!processKeycodeIfSftTab(keycode)) {return false;}
+        }
+        if (isCtlWordStarted) {
+            if (!processKeycodeIfCtlWord(keycode)) {return false;}
+        }
         if (IS_LAYER_ON(LA_LTHUMBEMO)) {
             if (!processKeycodeIfLThumbEMo(keycode, record)) {return false;}
         }
