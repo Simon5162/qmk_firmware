@@ -145,7 +145,6 @@ bool switch_ctl_tab_off(uint16_t keycode) {
         isCtlTabStarted = false;
         unregister_mods(MOD_MASK_CTRL);
         unregister_mods(MOD_MASK_SHIFT);
-        layer_off(LA_LTHUMB);
         layer_off_mo_layer(LA_LTHUMBDMO);
         layer_off_mo_layer(LA_LTHUMBEMO);
         if (keycode == KC_ENT) {
