@@ -122,92 +122,101 @@ void switch_to_previous_bt(keyrecord_t* record) {
         process_record_kb_bt(prev_kc_bt_hst, &fake_record);
     }
 }
-bool switch_ctl_tab_off(uint16_t keycode) {
-    if (isCtlTabStarted
-    && (keycode != KC_TAB)
-    && (keycode != KC_UP)
-    && (keycode != KC_DOWN)
-    && (keycode != KC_LEFT)
-    && (keycode != KC_RIGHT)
-    && (keycode != KC_HOME)
-    && (keycode != KC_END)
-    && (keycode != KC_DEL)
-    && (keycode != KC_MS_BTN4)
-    && (keycode != KC_MS_BTN5)
-    && (keycode != C(KC_Z))
-    && (keycode != MA_MS_LEFT)
-    && (keycode != MA_MS_RIGHT)
-    && (keycode != MA_MS_UP)
-    && (keycode != MA_MS_DOWN)
-    && (keycode != MA_LTHUMBD)
-    && (keycode != MA_LTHUMBE)
-    && (keycode != KC_LSFT)) {
-        isCtlTabStarted = false;
-        unregister_mods(MOD_MASK_CTRL);
-        unregister_mods(MOD_MASK_SHIFT);
-        layer_off_mo_layer(LA_LTHUMBDMO);
-        layer_off_mo_layer(LA_LTHUMBEMO);
-        if (keycode == KC_ENT) {
-            return false;
-        }
-    }
-    return true;
-}
-void switch_ctl_word_off(uint16_t keycode) {
-    if (isCtlWordStarted
-    && (keycode != KC_LEFT)
-    && (keycode != KC_RIGHT)
-    && (keycode != MA_LTHUMBE)
-    && (keycode != MA_LTHUMBD)) {
-        isCtlWordStarted = false;
-        unregister_mods(MOD_MASK_CTRL);
-    }
-}
-bool switch_alt_tab_off(uint16_t keycode) {
-    if (isAltTabStarted
-    && (keycode != KC_TAB)
-    && (keycode != KC_UP)
-    && (keycode != KC_DOWN)
-    && (keycode != KC_LEFT)
-    && (keycode != KC_RIGHT)
-    && (keycode != KC_DEL)
-    && (keycode != C(KC_Z))
-    && (keycode != MA_LTHUMBE)
-    && (keycode != MA_LTHUMBD)
-    && (keycode != KC_LSFT)) {
-        isAltTabStarted = false;
-        isLThumbWeakPristine = true;
-        unregister_code16(KC_LALT);
-        unregister_mods(MOD_MASK_SHIFT);
-        layer_off(LA_LTHUMB);
-        layer_off_mo_layer(LA_LTHUMBDMO);
-        layer_off_mo_layer(LA_LTHUMBEMO);
-        if (keycode == KC_ENT) {
-            return false;
-        }
-    }
-    return true;
-}
-bool switch_sht_tab_off(uint16_t keycode) {
-    if (isSftTabStarted
-    && (keycode != KC_TAB)
-    && (keycode != KC_UP)
-    && (keycode != KC_DOWN)
-    && (keycode != KC_LEFT)
-    && (keycode != KC_RIGHT)
-    && (keycode != MA_LTHUMBE)
-    && (keycode != MA_LTHUMBD)) {
-        isSftTabStarted = false;
-        isSftTabPristine = true;
-        isLThumbWeakPristine = true;
-        unregister_code16(KC_LSFT);
-        layer_off(LA_LTHUMB);
-        layer_off_mo_layer(LA_LTHUMBDMO);
-        layer_off_mo_layer(LA_LTHUMBEMO);
-    }
-    return true;
-}
 
+bool processKeycodeIfCtlWord(uint16_t keycode) {
+    switch (keycode) {
+        case KC_LEFT:
+        case KC_RIGHT:
+        case MA_LTHUMBE:
+        case MA_LTHUMBD:
+            return true;
+        default:
+            isCtlWordStarted = false;
+            unregister_mods(MOD_MASK_CTRL);
+            return true;
+    }
+}
+bool processKeycodeIfAltTab(uint16_t keycode) {
+    switch (keycode) {
+        case KC_TAB:
+        case KC_UP:
+        case KC_DOWN:
+        case KC_LEFT:
+        case KC_RIGHT:
+        case KC_DEL:
+        case C(KC_Z):
+        case MA_LTHUMBE:
+        case MA_LTHUMBD:
+        case KC_LSFT:
+            return true;
+        default:
+            isAltTabStarted = false;
+            isLThumbWeakPristine = true;
+            unregister_code16(KC_LALT);
+            unregister_mods(MOD_MASK_SHIFT);
+            layer_off(LA_LTHUMB);
+            layer_off_mo_layer(LA_LTHUMBDMO);
+            layer_off_mo_layer(LA_LTHUMBEMO);
+            if (keycode == KC_ENT) {
+                return false;
+            }
+            return true;
+    }
+}
+bool processKeycodeIfSftTab(uint16_t keycode) {
+    switch (keycode) {
+        case KC_TAB:
+        case KC_UP:
+        case KC_DOWN:
+        case KC_LEFT:
+        case KC_RIGHT:
+        case MA_LTHUMBE:
+        case MA_LTHUMBD:
+            return true;
+        default:
+            isSftTabStarted = false;
+            isSftTabPristine = true;
+            isLThumbWeakPristine = true;
+            unregister_code16(KC_LSFT);
+            layer_off(LA_LTHUMB);
+            layer_off_mo_layer(LA_LTHUMBDMO);
+            layer_off_mo_layer(LA_LTHUMBEMO);
+            return true;
+    }
+}
+bool processKeycodeIfCtlTab(uint16_t keycode) {
+    switch (keycode) {
+        case KC_TAB:
+        case KC_UP:
+        case KC_DOWN:
+        case KC_LEFT:
+        case KC_RIGHT:
+        case KC_HOME:
+        case KC_END:
+        case KC_DEL:
+        case KC_MS_BTN4:
+        case KC_MS_BTN5:
+        case C(KC_Z):
+        case MA_MS_LEFT:
+        case MA_MS_RIGHT:
+        case MA_MS_UP:
+        case MA_MS_DOWN:
+        case MA_LTHUMBD:
+        case MA_LTHUMBE:
+        case KC_LSFT:
+            return true;
+        default:
+            isCtlTabStarted = false;
+            unregister_mods(MOD_MASK_CTRL);
+            unregister_mods(MOD_MASK_SHIFT);
+            layer_off_mo_layer(LA_LTHUMBDMO);
+            layer_off_mo_layer(LA_LTHUMBEMO);
+            if (keycode == KC_ENT) {
+                return false;
+            }
+            return true;
+    }
+}
 bool processKeycodeIfMuteKeysEnabled(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case MA_MUTE_KEYS:
@@ -725,10 +734,6 @@ bool processKeycodeIfLThumbDStrong(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
-    switch_ctl_word_off(keycode);
-    if (!switch_ctl_tab_off(keycode)) {return false;}
-    if (!switch_alt_tab_off(keycode)) {return false;}
-    if (!switch_sht_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
             if (!(record->event.pressed)) {
@@ -995,10 +1000,6 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
-    switch_ctl_word_off(keycode);
-    if (!switch_ctl_tab_off(keycode)) {return false;}
-    if (!switch_alt_tab_off(keycode)) {return false;}
-    if (!switch_sht_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMBMS:
             if (!(record->event.pressed)) {
@@ -1180,8 +1181,6 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
     return true;
 }
 bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
-    switch_ctl_word_off(keycode);
-    if (!switch_ctl_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
         case MA_LTHUMBMS:
@@ -1258,8 +1257,6 @@ bool processKeycodeIfLThumb1Weak(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
-    switch_ctl_word_off(keycode);
-    if (!switch_ctl_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
         case MA_LTHUMBMS:
@@ -1336,8 +1333,6 @@ bool processKeycodeIfLThumb2Weak(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
-    switch_ctl_word_off(keycode);
-    if (!switch_ctl_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
         case MA_LTHUMBMS:
@@ -1414,8 +1409,6 @@ bool processKeycodeIfLThumb3Weak(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
-    switch_ctl_word_off(keycode);
-    if (!switch_ctl_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
         case MA_LTHUMBMS:
@@ -1462,8 +1455,6 @@ bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
     }
 }
 bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
-    switch_ctl_word_off(keycode);
-    if (!switch_ctl_tab_off(keycode)) {return false;}
     switch (keycode) {
         case MA_LTHUMB:
         case MA_LTHUMBMS:
