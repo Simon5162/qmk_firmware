@@ -6,6 +6,15 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         if (!processKeycodeIfMuteKeysEnabled(keycode, record)) {return false;}
     }
     if (IS_LAYER_ON(LA_LTHUMB) || IS_LAYER_ON(LA_LTHUMBMS)) {
+        if (isCtlTabStarted) {
+            if (!processKeycodeIfCtlTab(keycode, record)) {return false;}
+        }
+        if (isAltTabStarted) {
+            if (!processKeycodeIfAltTab(keycode, record)) {return false;}
+        }
+        if (isSftTabStarted) {
+            if (!processKeycodeIfSftTab(keycode, record)) {return false;}
+        }
         if (IS_LAYER_ON(LA_LTHUMBEMO)) {
             if (!processKeycodeIfLThumbEMo(keycode, record)) {return false;}
         }
@@ -32,15 +41,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         }
         if (IS_LAYER_ON(LA_LTHUMB)) {
             if (!processKeycodeIfLThumb(keycode, record)) {return false;}
-        }
-        if (isCtlTabStarted) {
-            if (!processKeycodeIfCtlTab(keycode, record)) {return false;}
-        }
-        if (isAltTabStarted) {
-            if (!processKeycodeIfAltTab(keycode, record)) {return false;}
-        }
-        if (isSftTabStarted) {
-            if (!processKeycodeIfSftTab(keycode, record)) {return false;}
         }
     }
     if (IS_LAYER_ON(LA_LTHUMBDSTRONG)) {
