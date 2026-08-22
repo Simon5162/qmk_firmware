@@ -34,16 +34,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
             if (!processKeycodeIfLThumb(keycode, record)) {return false;}
         }
         if (isCtlTabStarted) {
-            if (!processKeycodeIfCtlTab(keycode)) {return false;}
+            if (!processKeycodeIfCtlTab(keycode, record)) {return false;}
         }
         if (isAltTabStarted) {
-            if (!processKeycodeIfAltTab(keycode)) {return false;}
+            if (!processKeycodeIfAltTab(keycode, record)) {return false;}
         }
         if (isSftTabStarted) {
-            if (!processKeycodeIfSftTab(keycode)) {return false;}
-        }
-        if (isCtlWordStarted) {
-            if (!processKeycodeIfCtlWord(keycode)) {return false;}
+            if (!processKeycodeIfSftTab(keycode, record)) {return false;}
         }
     }
     if (IS_LAYER_ON(LA_LTHUMBDSTRONG)) {

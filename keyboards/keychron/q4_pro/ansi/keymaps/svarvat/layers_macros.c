@@ -6,7 +6,6 @@ bool editModeLThumbStrongStarted = false;
 bool isCtlTabStarted = false;
 bool isAltTabStarted = false;
 bool isSftTabStarted = false;
-bool isCtlWordStarted = false;
 bool isCapswordStarted = false;
 bool isScrollLeftOn = false;
 bool isScrollRightOn = false;
@@ -123,20 +122,8 @@ void switch_to_previous_bt(keyrecord_t* record) {
     }
 }
 
-bool processKeycodeIfCtlWord(uint16_t keycode) {
-    switch (keycode) {
-        case KC_LEFT:
-        case KC_RIGHT:
-        case MA_LTHUMBE:
-        case MA_LTHUMBD:
-            return true;
-        default:
-            isCtlWordStarted = false;
-            unregister_mods(MOD_MASK_CTRL);
-            return true;
-    }
-}
-bool processKeycodeIfAltTab(uint16_t keycode) {
+
+bool processKeycodeIfAltTab(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case KC_TAB:
         case KC_RIGHT:
@@ -163,7 +150,7 @@ bool processKeycodeIfAltTab(uint16_t keycode) {
             return true;
     }
 }
-bool processKeycodeIfSftTab(uint16_t keycode) {
+bool processKeycodeIfSftTab(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case KC_TAB:
         case KC_RIGHT:
@@ -200,7 +187,7 @@ bool processKeycodeIfSftTab(uint16_t keycode) {
             return true;
     }
 }
-bool processKeycodeIfCtlTab(uint16_t keycode) {
+bool processKeycodeIfCtlTab(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case KC_TAB:
         case KC_DOWN:
@@ -769,7 +756,6 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
         case KC_LEFT:
             if (record->event.pressed) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
-                    isCtlWordStarted = true;
                     register_code16(KC_LCTL);
                 }
                 isFloodLeftOn = true;
@@ -777,14 +763,12 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 isFloodLeftOn = false;
                 if (IS_LAYER_ON(LA_LPINKY)) {
                     unregister_code16(KC_LCTL);
-                    isCtlWordStarted = false;
                 }
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_RGHT:
             if (record->event.pressed) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
-                    isCtlWordStarted = true;
                     register_code16(KC_LCTL);
                 }
                 isFloodRightOn = true;
@@ -792,7 +776,6 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 isFloodRightOn = false;
                 if (IS_LAYER_ON(LA_LPINKY)) {
                     unregister_code16(KC_LCTL);
-                    isCtlWordStarted = false;
                 }
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
@@ -815,7 +798,6 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
         case KC_BSPC:
             if (record->event.pressed) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
-                    isCtlWordStarted = true;
                     register_code16(KC_LCTL);
                     isFloodBspcOn = true;
                 } else {
@@ -825,7 +807,6 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
                     isFloodBspcOn = false;
                     unregister_code16(KC_LCTL);
-                    isCtlWordStarted = false;
                 } else {
                     isFloodBspcOn = false;
                 }
@@ -834,7 +815,6 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
         case KC_DEL:
             if (record->event.pressed) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
-                    isCtlWordStarted = true;
                     register_code16(KC_LCTL);
                     isFloodDelOn = true;
                 } else {
@@ -844,7 +824,6 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
                     isFloodDelOn = false;
                     unregister_code16(KC_LCTL);
-                    isCtlWordStarted = false;
                 } else {
                     isFloodDelOn = false;
                 }
