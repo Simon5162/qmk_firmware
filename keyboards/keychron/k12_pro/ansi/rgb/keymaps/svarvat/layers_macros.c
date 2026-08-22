@@ -155,12 +155,8 @@ bool processKeycodeIfAltTab(uint16_t keycode) {
             return false;
         default:
             isAltTabStarted = false;
-            isLThumbWeakPristine = true;
             unregister_code16(KC_LALT);
             unregister_mods(MOD_MASK_SHIFT);
-            layer_off(LA_LTHUMB);
-            layer_off_mo_layer(LA_LTHUMBDMO);
-            layer_off_mo_layer(LA_LTHUMBEMO);
             if (keycode == KC_ENT) {
                 return false;
             }
@@ -171,44 +167,36 @@ bool processKeycodeIfSftTab(uint16_t keycode) {
     switch (keycode) {
         case KC_TAB:
         case KC_RIGHT:
-        case MA_MS_RIGHT:
         case KC_DOWN:
+        case MA_MS_RIGHT:
         case MA_MS_DOWN:
             if (record->event.pressed) {
                 if (isSftTabPristine) isSftTabPristine = false;
                 unregister_code16(KC_LSFT);
-                isFloodTabOn = true;
                 if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
-                isFloodTabOn = false;
                 register_code16(KC_LSFT);
             }
             return false;
         case KC_LEFT:
-        case MA_MS_LEFT:
         case KC_UP:
+        case MA_MS_LEFT:
         case MA_MS_UP:
             if (record->event.pressed) {
                 if (isSftTabPristine) isSftTabPristine = false;
                 register_code16(KC_LSFT);
-                isFloodTabOn = true;
                 if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
-                isFloodTabOn = false;
                 unregister_code16(KC_LSFT);
             }
             return false;
         case MA_LTHUMBE:
         case MA_LTHUMBD:
-            return true;
+            return false;
         default:
             isSftTabStarted = false;
             isSftTabPristine = true;
-            isLThumbWeakPristine = true;
             unregister_code16(KC_LSFT);
-            layer_off(LA_LTHUMB);
-            layer_off_mo_layer(LA_LTHUMBDMO);
-            layer_off_mo_layer(LA_LTHUMBEMO);
             return true;
     }
 }
@@ -220,25 +208,20 @@ bool processKeycodeIfCtlTab(uint16_t keycode) {
         case MA_MS_DOWN:
         case MA_MS_RIGHT:
             if (record->event.pressed) {
-                isFloodTabOn = true;
                 if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
-            } else {
-                isFloodTabOn = false;
             }
-            return false;
+            return true;
         case KC_UP:
         case KC_LEFT:
         case MA_MS_UP:
         case MA_MS_LEFT:
             if (record->event.pressed) {
                 register_code16(KC_LSFT);
-                isFloodTabOn = true;
                 if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
-                isFloodTabOn = false;
                 unregister_code16(KC_LSFT);
             }
-            return false;
+            return true;
         case KC_HOME:
         case KC_MS_BTN4:
             if (record->event.pressed) {
@@ -501,56 +484,28 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
             return false;
         case MA_MS_DOWN:
             if (record->event.pressed) {
-                if (isAltTabStarted) {
-                    tap_code16(KC_DOWN);
-                } else if (isSftTabStarted) {
-                    unregister_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    register_code16(KC_LSFT);
-                } else {
-                    isFloodDownOn = true;
-                }
+                isFloodDownOn = true;
             } else {
                 isFloodDownOn = false;
             }
             return false;
         case MA_MS_UP:
             if (record->event.pressed) {
-                if (isAltTabStarted) {
-                    tap_code16(KC_UP);
-                } else if (isSftTabStarted) {
-                    tap_code16(KC_TAB);
-                } else {
-                    isFloodUpOn = true;
-                }
+                isFloodUpOn = true;
             } else {
                 isFloodUpOn = false;
             }
             return false;
         case MA_MS_LEFT:
             if (record->event.pressed) {
-                if (isAltTabStarted) {
-                    tap_code16(KC_LEFT);
-                } else if (isSftTabStarted) {
-                    tap_code16(KC_TAB);
-                } else {
-                    isFloodLeftOn = true;
-                }
+                isFloodLeftOn = true;
             } else {
                 isFloodLeftOn = false;
             }
             return false;
         case MA_MS_RIGHT:
             if (record->event.pressed) {
-                if (isAltTabStarted) {
-                    tap_code16(KC_RIGHT);
-                } else if (isSftTabStarted) {
-                    unregister_code16(KC_LSFT);
-                    tap_code16(KC_TAB);
-                    register_code16(KC_LSFT);
-                } else {
-                    isFloodRightOn = true;
-                }
+                isFloodRightOn = true;
             } else {
                 isFloodRightOn = false;
             }
@@ -564,8 +519,6 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                     register_code16(KC_MS_BTN1);
                     isMouseBtn1HoldStarted = true;
                 }
-            } else {
-                isFloodRightOn = false;
             }
             return false;
         default:

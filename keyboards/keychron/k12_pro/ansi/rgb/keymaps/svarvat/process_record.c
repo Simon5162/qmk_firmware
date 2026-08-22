@@ -5,19 +5,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     if (isMuteKeysEnabled) {
         if (!processKeycodeIfMuteKeysEnabled(keycode, record)) {return false;}
     }
-    if (IS_LAYER_ON(LA_LTHUMB) || IS_LAYER_ON(LA_LTHUMBMS) || isAltTabStarted) {
-        if (isCtlTabStarted) {
-            if (!processKeycodeIfCtlTab(keycode)) {return false;}
-        }
-        if (isAltTabStarted) {
-            if (!processKeycodeIfAltTab(keycode)) {return false;}
-        }
-        if (isSftTabStarted) {
-            if (!processKeycodeIfSftTab(keycode)) {return false;}
-        }
-        if (isCtlWordStarted) {
-            if (!processKeycodeIfCtlWord(keycode)) {return false;}
-        }
+    if (IS_LAYER_ON(LA_LTHUMB) || IS_LAYER_ON(LA_LTHUMBMS)) {
         if (IS_LAYER_ON(LA_LTHUMBEMO)) {
             if (!processKeycodeIfLThumbEMo(keycode, record)) {return false;}
         }
@@ -42,7 +30,21 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
         if (IS_LAYER_ON(LA_LTHUMBMS)) {
             if (!processKeycodeIfLThumbMs(keycode, record)) {return false;}
         }
-        else if (!processKeycodeIfLThumb(keycode, record)) {return false;}
+        if (IS_LAYER_ON(LA_LTHUMB)) {
+            if (!processKeycodeIfLThumb(keycode, record)) {return false;}
+        }
+        if (isCtlTabStarted) {
+            if (!processKeycodeIfCtlTab(keycode)) {return false;}
+        }
+        if (isAltTabStarted) {
+            if (!processKeycodeIfAltTab(keycode)) {return false;}
+        }
+        if (isSftTabStarted) {
+            if (!processKeycodeIfSftTab(keycode)) {return false;}
+        }
+        if (isCtlWordStarted) {
+            if (!processKeycodeIfCtlWord(keycode)) {return false;}
+        }
     }
     if (IS_LAYER_ON(LA_LTHUMBDSTRONG)) {
         if(!processKeycodeIfLThumbDStrong(keycode, record)) {return false;}
