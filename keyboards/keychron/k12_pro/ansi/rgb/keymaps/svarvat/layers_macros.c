@@ -137,7 +137,7 @@ bool processKeycodeIfAltTab(uint16_t keycode, keyrecord_t* record) {
             return true;
         case KC_DEL:
             if (record->event.pressed) {
-                register_code16(C(KC_Z));
+                tap_code16(C(KC_Z));
             }
             return false;
         default:
@@ -232,7 +232,7 @@ bool processKeycodeIfCtlTab(uint16_t keycode, keyrecord_t* record) {
             return true;
         case KC_DEL:
             if (record->event.pressed) {
-                register_code16(C(KC_Z));
+                tap_code16(C(KC_Z));
             }
             return false;
         default:
