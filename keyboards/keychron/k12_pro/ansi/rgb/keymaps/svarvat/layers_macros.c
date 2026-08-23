@@ -144,6 +144,8 @@ bool processKeycodeIfAltTab(uint16_t keycode, keyrecord_t* record) {
             isAltTabStarted = false;
             unregister_code16(KC_LALT);
             unregister_mods(MOD_MASK_SHIFT);
+            layer_off_mo_layer(LA_LTHUMBDMO);
+            layer_off_mo_layer(LA_LTHUMBEMO);
             if (keycode == KC_ENT) {
                 return false;
             }
@@ -179,11 +181,13 @@ bool processKeycodeIfSftTab(uint16_t keycode, keyrecord_t* record) {
             return false;
         case MA_LTHUMBE:
         case MA_LTHUMBD:
-            return false;
+            return true;
         default:
             isSftTabStarted = false;
             isSftTabPristine = true;
             unregister_code16(KC_LSFT);
+            layer_off_mo_layer(LA_LTHUMBDMO);
+            layer_off_mo_layer(LA_LTHUMBEMO);
             return true;
     }
 }
