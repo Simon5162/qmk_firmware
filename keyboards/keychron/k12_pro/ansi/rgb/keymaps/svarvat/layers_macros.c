@@ -176,12 +176,10 @@ bool processKeycodeIfSftTab(uint16_t keycode, keyrecord_t* record) {
         case MA_MS_UP:
             if (record->event.pressed) {
                 if (isSftTabPristine) isSftTabPristine = false;
-                register_code16(KC_LSFT);
                 isFloodTabOn = true;
                 if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
                 isFloodTabOn = false;
-                unregister_code16(KC_LSFT);
             }
             return false;
         case MA_LTHUMBE:
