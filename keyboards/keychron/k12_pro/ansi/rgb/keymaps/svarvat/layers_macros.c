@@ -237,6 +237,7 @@ bool processKeycodeIfCtlTab(uint16_t keycode, keyrecord_t* record) {
             return false;
         default:
             isCtlTabStarted = false;
+            unregister_mods(MOD_MASK_CTRL);
             unregister_mods(MOD_MASK_SHIFT);
             layer_off_mo_layer(LA_LTHUMBDMO);
             layer_off_mo_layer(LA_LTHUMBEMO);
