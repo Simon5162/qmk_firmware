@@ -163,7 +163,6 @@ bool processKeycodeIfSftTab(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isSftTabPristine) isSftTabPristine = false;
                 unregister_code16(KC_LSFT);
-                if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
                 register_code16(KC_LSFT);
             }
@@ -175,7 +174,6 @@ bool processKeycodeIfSftTab(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isSftTabPristine) isSftTabPristine = false;
                 register_code16(KC_LSFT);
-                if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
                 unregister_code16(KC_LSFT);
             }
@@ -200,9 +198,6 @@ bool processKeycodeIfCtlTab(uint16_t keycode, keyrecord_t* record) {
         case KC_RIGHT:
         case MA_MS_DOWN:
         case MA_MS_RIGHT:
-            if (record->event.pressed) {
-                if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
-            }
             return true;
         case KC_UP:
         case KC_LEFT:
@@ -210,7 +205,6 @@ bool processKeycodeIfCtlTab(uint16_t keycode, keyrecord_t* record) {
         case MA_MS_LEFT:
             if (record->event.pressed) {
                 register_code16(KC_LSFT);
-                if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
                 unregister_code16(KC_LSFT);
             }
@@ -243,7 +237,6 @@ bool processKeycodeIfCtlTab(uint16_t keycode, keyrecord_t* record) {
             return false;
         default:
             isCtlTabStarted = false;
-            unregister_mods(MOD_MASK_CTRL);
             unregister_mods(MOD_MASK_SHIFT);
             layer_off_mo_layer(LA_LTHUMBDMO);
             layer_off_mo_layer(LA_LTHUMBEMO);
