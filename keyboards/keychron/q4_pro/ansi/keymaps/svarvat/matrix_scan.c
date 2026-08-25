@@ -50,12 +50,12 @@ void matrix_scan_user(void) {
     if (IS_LAYER_ON(LA_LTHUMBEMO)) {
         if (IS_LAYER_ON(LA_MOUSE)) {
             int8_t mx = isFloodRightOn ? 8 : (isFloodLeftOn ? -8 : 0);
-            int8_t my = isFloodDownOn  ? 8 : (isFloodUpOn   ? -8 : 0);
+            int8_t my = isFloodDownOn ? 8 : (isFloodUpOn ? -8 : 0);
             if (mx || my) move_mouse(mx, my);
 
             if (isScrollDownOn || isScrollUpOn || isScrollLeftOn || isScrollRightOn) {
                 if (timer_elapsed(floodTimerX3) > floodScrollIntervalX3) {
-                    scroll_mouse(isScrollUpOn   ? 20 : (isScrollDownOn  ? -20 : 0),
+                    scroll_mouse(isScrollUpOn ? 20 : (isScrollDownOn ? -20 : 0),
                                  isScrollRightOn ? 20 : (isScrollLeftOn ? -20 : 0));
                     floodTimerX3 = timer_read();
                 }
@@ -76,12 +76,12 @@ void matrix_scan_user(void) {
     } else if (IS_LAYER_ON(LA_LTHUMBDMO)) {
         if (IS_LAYER_ON(LA_MOUSE)) {
             int8_t mx = isFloodRightOn ? 3 : (isFloodLeftOn ? -3 : 0);
-            int8_t my = isFloodDownOn  ? 3 : (isFloodUpOn   ? -3 : 0);
+            int8_t my = isFloodDownOn ? 3 : (isFloodUpOn ? -3 : 0);
             if (mx || my) move_mouse(mx, my);
 
             if (isScrollDownOn || isScrollUpOn || isScrollLeftOn || isScrollRightOn) {
                 if (timer_elapsed(floodTimerX2) > floodScrollIntervalX2) {
-                    scroll_mouse(isScrollUpOn   ? 10 : (isScrollDownOn  ? -10 : 0),
+                    scroll_mouse(isScrollUpOn ? 10 : (isScrollDownOn ? -10 : 0),
                                  isScrollRightOn ? 10 : (isScrollLeftOn ? -10 : 0));
                     floodTimerX2 = timer_read();
                 }
@@ -103,13 +103,13 @@ void matrix_scan_user(void) {
         if (isFloodRightOn || isFloodLeftOn || isFloodDownOn || isFloodUpOn) {
             if (timer_elapsed(floodTimerX1) > floodMouseIntervalX1) {
                 move_mouse(isFloodRightOn ? 1 : (isFloodLeftOn ? -1 : 0),
-                           isFloodDownOn  ? 1 : (isFloodUpOn   ? -1 : 0));
+                           isFloodDownOn ? 1 : (isFloodUpOn ? -1 : 0));
                 floodTimerX1 = timer_read();
             }
         }
         if (isScrollDownOn || isScrollUpOn || isScrollLeftOn || isScrollRightOn) {
             if (timer_elapsed(floodTimerX1) > floodScrollIntervalX1) {
-                scroll_mouse(isScrollUpOn   ? 1 : (isScrollDownOn  ? -1 : 0),
+                scroll_mouse(isScrollUpOn ? 1 : (isScrollDownOn ? -1 : 0),
                              isScrollRightOn ? 1 : (isScrollLeftOn ? -1 : 0));
                 floodTimerX1 = timer_read();
             }

@@ -163,7 +163,10 @@ bool processKeycodeIfSftTab(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isSftTabPristine) isSftTabPristine = false;
                 unregister_code16(KC_LSFT);
+                isFloodTabOn = true;
+                if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
+                isFloodTabOn = false;
                 register_code16(KC_LSFT);
             }
             return false;
@@ -174,7 +177,10 @@ bool processKeycodeIfSftTab(uint16_t keycode, keyrecord_t* record) {
             if (record->event.pressed) {
                 if (isSftTabPristine) isSftTabPristine = false;
                 register_code16(KC_LSFT);
+                isFloodTabOn = true;
+                if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
+                isFloodTabOn = false;
                 unregister_code16(KC_LSFT);
             }
             return false;
@@ -198,17 +204,26 @@ bool processKeycodeIfCtlTab(uint16_t keycode, keyrecord_t* record) {
         case KC_RIGHT:
         case MA_MS_DOWN:
         case MA_MS_RIGHT:
-            return true;
+            if (record->event.pressed) {
+                isFloodTabOn = true;
+                if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
+            } else {
+                isFloodTabOn = false;
+            }
+            return false;
         case KC_UP:
         case KC_LEFT:
         case MA_MS_UP:
         case MA_MS_LEFT:
             if (record->event.pressed) {
                 register_code16(KC_LSFT);
+                isFloodTabOn = true;
+                if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
+                isFloodTabOn = false;
                 unregister_code16(KC_LSFT);
             }
-            return true;
+            return false;
         case KC_HOME:
         case KC_MS_BTN4:
             if (record->event.pressed) {
