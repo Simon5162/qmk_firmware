@@ -24,7 +24,6 @@ bool isWeakLaMouseStarted = false;
 bool isMouseBtn1HoldStarted = false;
 bool isLThumbMoPristine = true;
 bool isLThumbWeakPristine = true;
-bool isSftTabPristine = true;
 uint16_t inMemoryPreviousWeakLayer = 0;
 uint16_t inMemoryCurrentWeakLayer = 0;
 static uint16_t bt_history[2] = {BT_HST5, BT_HST6};
@@ -155,13 +154,11 @@ bool processKeycodeIfAltTab(uint16_t keycode, keyrecord_t* record) {
 }
 bool processKeycodeIfSftTab(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
-        case KC_TAB:
         case KC_RIGHT:
         case KC_DOWN:
         case MA_MS_RIGHT:
         case MA_MS_DOWN:
             if (record->event.pressed) {
-                if (isSftTabPristine) isSftTabPristine = false;
                 unregister_code16(KC_LSFT);
                 isFloodTabOn = true;
                 if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
@@ -170,12 +167,12 @@ bool processKeycodeIfSftTab(uint16_t keycode, keyrecord_t* record) {
                 register_code16(KC_LSFT);
             }
             return false;
+        case KC_TAB:
         case KC_LEFT:
         case KC_UP:
         case MA_MS_LEFT:
         case MA_MS_UP:
             if (record->event.pressed) {
-                if (isSftTabPristine) isSftTabPristine = false;
                 isFloodTabOn = true;
                 if (IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO)) tap_code16(KC_TAB);
             } else {
@@ -187,7 +184,6 @@ bool processKeycodeIfSftTab(uint16_t keycode, keyrecord_t* record) {
             return true;
         default:
             isSftTabStarted = false;
-            isSftTabPristine = true;
             unregister_code16(KC_LSFT);
             layer_off(LA_LTHUMB);
             layer_off_mo_layer(LA_LTHUMBDMO);
@@ -323,9 +319,13 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
                 if ((get_mods() & MOD_BIT(KC_LALT)) == MOD_BIT(KC_LALT) && !isAltTabStarted && !isSftTabStarted && !isCtlTabStarted) {
                     isAltTabStarted = true;
                     layer_on(LA_LTHUMB);
+                    tap_code16(KC_TAB);
+                    return false;
                 } else if ((get_mods() & MOD_BIT(KC_LSFT)) == MOD_BIT(KC_LSFT) && !isSftTabStarted && !isAltTabStarted && !isCtlTabStarted) {
                     isSftTabStarted = true;
                     layer_on(LA_LTHUMB);
+                    tap_code16(KC_TAB);
+                    return false;
                 }
             }
             return true;
