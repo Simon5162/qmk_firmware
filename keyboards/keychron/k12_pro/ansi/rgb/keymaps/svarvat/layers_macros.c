@@ -703,6 +703,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
         case MA_LTHUMB:
             if (!(record->event.pressed)) {
                 layer_off(LA_LTHUMB);
+                unregister_code16(KC_LCTL);
                 isFloodUpOn = false;
                 isFloodDownOn = false;
                 isFloodLeftOn = false;
