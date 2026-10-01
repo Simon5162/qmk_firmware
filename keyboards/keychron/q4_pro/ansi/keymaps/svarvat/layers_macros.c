@@ -54,6 +54,49 @@ void keyboard_post_init_user(void) {
     }
 }
 
+void switch_flood_off(void) {
+    isScrollLeftOn = false;
+    isScrollRightOn = false;
+    isScrollUpOn = false;
+    isScrollDownOn = false;
+    isFloodUpOn = false;
+    isFloodDownOn = false;
+    isFloodLeftOn = false;
+    isFloodRightOn = false;
+    isFloodDelOn = false;
+    isFloodEntOn = false;
+    isFloodBspcOn = false;
+    isFloodTabOn = false;
+}
+bool is_flood_off(void) {
+    return !isFloodUpOn
+        && !isFloodDownOn
+        && !isFloodLeftOn
+        && !isFloodRightOn
+        && !isFloodDelOn
+        && !isFloodEntOn
+        && !isFloodBspcOn
+        && !isFloodTabOn
+        && !isScrollLeftOn
+        && !isScrollRightOn
+        && !isScrollUpOn
+        && !isScrollDownOn;
+}
+bool is_flood_on(void) {
+    return isFloodUpOn
+        || isFloodDownOn
+        || isFloodLeftOn
+        || isFloodRightOn
+        || isFloodDelOn
+        || isFloodEntOn
+        || isFloodBspcOn
+        || isFloodTabOn
+        || isScrollLeftOn
+        || isScrollRightOn
+        || isScrollUpOn
+        || isScrollDownOn;
+}
+
 void layer_on_lmouse(void) {
     layer_on(LA_MOUSE);
     tap_code16(KC_SCROLL_LOCK);
@@ -62,14 +105,7 @@ void layer_off_lmouse(void) {
 //  set_auto_mouse_enable(false);
     layer_off(LA_MOUSE);
     tap_code16(KC_SCROLL_LOCK);
-    isScrollLeftOn = false;
-    isScrollUpOn = false;
-    isScrollDownOn = false;
-    isScrollRightOn = false;
-    isFloodDownOn = false;
-    isFloodUpOn = false;
-    isFloodRightOn = false;
-    isFloodLeftOn = false;
+    switch_flood_off();
     if (isMouseBtn1HoldStarted) {
         unregister_code16(KC_MS_BTN1);
         isMouseBtn1HoldStarted = false;
@@ -120,7 +156,6 @@ void switch_to_previous_bt(keyrecord_t* record) {
         process_record_kb_bt(prev_kc_bt_hst, &fake_record);
     }
 }
-
 
 bool processKeycodeIfAltTab(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
@@ -704,14 +739,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             if (!(record->event.pressed)) {
                 layer_off(LA_LTHUMB);
                 unregister_code16(KC_LCTL);
-                isFloodUpOn = false;
-                isFloodDownOn = false;
-                isFloodLeftOn = false;
-                isFloodRightOn = false;
-                isFloodDelOn = false;
-                isFloodEntOn = false;
-                isFloodBspcOn = false;
-                isFloodTabOn = false;
+                switch_flood_off();
             }
             return false;
         case MA_LTHUMBD:
@@ -867,18 +895,7 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
             if (!(record->event.pressed)) {
                 isWeakLaMouseStarted = false;
                 layer_off(LA_LTHUMBMS);
-                isScrollLeftOn = false;
-                isScrollUpOn = false;
-                isScrollDownOn = false;
-                isScrollRightOn = false;
-                isFloodUpOn = false;
-                isFloodDownOn = false;
-                isFloodLeftOn = false;
-                isFloodRightOn = false;
-                isFloodDelOn = false;
-                isFloodEntOn = false;
-                isFloodBspcOn = false;
-                isFloodTabOn = false;
+                switch_flood_off();
             }
             return false;
         case MA_LTHUMB:
@@ -886,18 +903,7 @@ bool processKeycodeIfLThumbMs(uint16_t keycode, keyrecord_t* record) {
                 isWeakLaMouseStarted = false;
                 layer_off(LA_LTHUMBMS);
                 layer_off_lmouse();
-                isScrollLeftOn = false;
-                isScrollUpOn = false;
-                isScrollDownOn = false;
-                isScrollRightOn = false;
-                isFloodUpOn = false;
-                isFloodDownOn = false;
-                isFloodLeftOn = false;
-                isFloodRightOn = false;
-                isFloodDelOn = false;
-                isFloodEntOn = false;
-                isFloodBspcOn = false;
-                isFloodTabOn = false;
+                switch_flood_off();
             }
             return false;
         case MA_LTHUMBD:
@@ -1199,19 +1205,7 @@ bool processKeycodeIfLThumbEWeak(uint16_t keycode, keyrecord_t* record) {
             return true;
         case MA_LTHUMBE:
             if (record->event.pressed) {
-                if (isLThumbWeakPristine
-                && !isFloodUpOn
-                && !isFloodDownOn
-                && !isFloodLeftOn
-                && !isFloodRightOn
-                && !isFloodDelOn
-                && !isFloodEntOn
-                && !isFloodBspcOn
-                && !isFloodTabOn
-                && !isScrollLeftOn
-                && !isScrollRightOn
-                && !isScrollUpOn
-                && !isScrollDownOn) {
+                if (isLThumbWeakPristine && is_flood_off()) {
                     tap_code16(C(KC_Q));
                     isLThumbWeakPristine = false;
                     layer_off(LA_LTHUMBESTRONG);
@@ -1245,19 +1239,7 @@ bool processKeycodeIfLThumbDWeak(uint16_t keycode, keyrecord_t* record) {
             return true;
         case MA_LTHUMBD:
             if (record->event.pressed) {
-                if (isLThumbWeakPristine
-                && !isFloodUpOn
-                && !isFloodDownOn
-                && !isFloodLeftOn
-                && !isFloodRightOn
-                && !isFloodDelOn
-                && !isFloodEntOn
-                && !isFloodBspcOn
-                && !isFloodTabOn
-                && !isScrollLeftOn
-                && !isScrollRightOn
-                && !isScrollUpOn
-                && !isScrollDownOn) {
+                if (isLThumbWeakPristine && is_flood_off()) {
                     tap_code16(G(KC_UP));
                     isLThumbWeakPristine = false;
                     layer_off(LA_LTHUMBDSTRONG);
@@ -1313,18 +1295,7 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
         case MA_LTHUMBE:
             if (!(record->event.pressed)) {
                 if (!isWeakLaMouseStarted) {
-                    if (isFloodUpOn
-                    || isFloodDownOn
-                    || isFloodLeftOn
-                    || isFloodRightOn
-                    || isFloodDelOn
-                    || isFloodEntOn
-                    || isFloodBspcOn
-                    || isFloodTabOn
-                    || isScrollLeftOn
-                    || isScrollRightOn
-                    || isScrollUpOn
-                    || isScrollDownOn) {
+                    if (is_flood_on()) {
                         reverse_weak_layer();
                     } else {
                         if (isLThumbMoPristine && isLThumbWeakPristine) {
@@ -1357,18 +1328,7 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
         case MA_LTHUMBD:
             if (!(record->event.pressed)) {
                 if (!isWeakLaMouseStarted) {
-                    if (isFloodUpOn
-                    || isFloodDownOn
-                    || isFloodLeftOn
-                    || isFloodRightOn
-                    || isFloodDelOn
-                    || isFloodEntOn
-                    || isFloodBspcOn
-                    || isFloodTabOn
-                    || isScrollLeftOn
-                    || isScrollRightOn
-                    || isScrollUpOn
-                    || isScrollDownOn) {
+                    if (is_flood_on()) {
                         reverse_weak_layer();
                     } else {
                         if (isLThumbMoPristine && isLThumbWeakPristine) {
