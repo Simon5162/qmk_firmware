@@ -1313,7 +1313,7 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
         case KC_DEL:
         case KC_ENT:
         case KC_BSPC:
-            if (record->event.pressed && !isWeakLaMouseStarted) {
+            if (record->event.pressed && !isWeakLaMouseStarted && !isAltTabStarted) {
                 reverse_weak_layer();
             }
             return true;
@@ -1346,7 +1346,7 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
         case KC_DEL:
         case KC_ENT:
         case KC_BSPC:
-            if (record->event.pressed && !isWeakLaMouseStarted) {
+            if (record->event.pressed && !isWeakLaMouseStarted && !isAltTabStarted) {
                 reverse_weak_layer();
             }
             return true;
