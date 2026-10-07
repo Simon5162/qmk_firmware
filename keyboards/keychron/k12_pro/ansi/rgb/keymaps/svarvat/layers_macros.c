@@ -19,6 +19,8 @@ bool isFloodDelOn = false;
 bool isFloodEntOn = false;
 bool isFloodBspcOn = false;
 bool isFloodTabOn = false;
+bool isFloodPageUpOn = false;
+bool isFloodPageDownOn = false;
 bool isMuteKeysEnabled = false;
 bool isWeakLaMouseStarted = false;
 bool isMouseBtn1HoldStarted = false;
@@ -55,10 +57,6 @@ void keyboard_post_init_user(void) {
 }
 
 void switch_flood_off(void) {
-    isScrollLeftOn = false;
-    isScrollRightOn = false;
-    isScrollUpOn = false;
-    isScrollDownOn = false;
     isFloodUpOn = false;
     isFloodDownOn = false;
     isFloodLeftOn = false;
@@ -67,6 +65,12 @@ void switch_flood_off(void) {
     isFloodEntOn = false;
     isFloodBspcOn = false;
     isFloodTabOn = false;
+    isFloodPageUpOn = false;
+    isFloodPageDownOn = false;
+    isScrollLeftOn = false;
+    isScrollRightOn = false;
+    isScrollUpOn = false;
+    isScrollDownOn = false;
 }
 bool is_flood_off(void) {
     return !isFloodUpOn
@@ -77,6 +81,8 @@ bool is_flood_off(void) {
         && !isFloodEntOn
         && !isFloodBspcOn
         && !isFloodTabOn
+        && !isFloodPageUpOn
+        && !isFloodPageDownOn
         && !isScrollLeftOn
         && !isScrollRightOn
         && !isScrollUpOn
@@ -91,6 +97,8 @@ bool is_flood_on(void) {
         || isFloodEntOn
         || isFloodBspcOn
         || isFloodTabOn
+        || isFloodPageUpOn
+        || isFloodPageDownOn
         || isScrollLeftOn
         || isScrollRightOn
         || isScrollUpOn
@@ -828,21 +836,31 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_PGUP:
-            if (IS_LAYER_ON(LA_LPINKY) && record->event.pressed) {
-                register_code16(KC_LCTL);
-                tap_code16(KC_HOME);
-                unregister_code16(KC_LCTL);
-                return false;
+            if (record->event.pressed) {
+                if (IS_LAYER_ON(LA_LPINKY)) {
+                    register_code16(KC_LCTL);
+                    tap_code16(KC_HOME);
+                    unregister_code16(KC_LCTL);
+                    return false;
+                }
+                isFloodPageUpOn = true;
+            } else {
+                isFloodPageUpOn = false;
             }
-            return true;
+            return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_PGDN:
-            if (IS_LAYER_ON(LA_LPINKY) && record->event.pressed) {
-                register_code16(KC_LCTL);
-                tap_code16(KC_END);
-                unregister_code16(KC_LCTL);
-                return false;
+            if (record->event.pressed) {
+                if (IS_LAYER_ON(LA_LPINKY)) {
+                    register_code16(KC_LCTL);
+                    tap_code16(KC_END);
+                    unregister_code16(KC_LCTL);
+                    return false;
+                }
+                isFloodPageDownOn = true;
+            } else {
+                isFloodPageDownOn = false;
             }
-            return true;
+            return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_BSPC:
             if (record->event.pressed) {
                 if (IS_LAYER_ON(LA_LPINKY)) {
@@ -1294,7 +1312,7 @@ bool processKeycodeIfLThumbEMo(uint16_t keycode, keyrecord_t* record) {
         case MA_LTHUMBMS:
         case MA_LTHUMBE:
             if (!(record->event.pressed)) {
-                if (!isWeakLaMouseStarted) {
+                if (!isWeakLaMouseStarted && !isAltTabStarted) {
                     if (is_flood_on()) {
                         reverse_weak_layer();
                     } else {
@@ -1327,7 +1345,7 @@ bool processKeycodeIfLThumbDMo(uint16_t keycode, keyrecord_t* record) {
         case MA_LTHUMBMS:
         case MA_LTHUMBD:
             if (!(record->event.pressed)) {
-                if (!isWeakLaMouseStarted) {
+                if (!isWeakLaMouseStarted && !isAltTabStarted) {
                     if (is_flood_on()) {
                         reverse_weak_layer();
                     } else {

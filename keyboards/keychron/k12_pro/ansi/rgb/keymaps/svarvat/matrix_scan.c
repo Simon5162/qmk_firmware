@@ -32,14 +32,16 @@ static void scroll_mouse(int8_t v, int8_t h) {
 }
 
 static void dispatch_flood_keys(void) {
-    if (isFloodUpOn)    tap_code16(KC_UP);
-    if (isFloodDownOn)  tap_code16(KC_DOWN);
-    if (isFloodLeftOn)  tap_code16(KC_LEFT);
-    if (isFloodRightOn) tap_code16(KC_RIGHT);
-    if (isFloodDelOn)   tap_code16(KC_DEL);
-    if (isFloodEntOn)   tap_code16(KC_ENT);
-    if (isFloodBspcOn)  tap_code16(KC_BSPC);
-    if (isFloodTabOn)   tap_code16(KC_TAB);
+    if (isFloodUpOn)     tap_code16(KC_UP);
+    if (isFloodDownOn)   tap_code16(KC_DOWN);
+    if (isFloodLeftOn)   tap_code16(KC_LEFT);
+    if (isFloodRightOn)  tap_code16(KC_RIGHT);
+    if (isFloodDelOn)    tap_code16(KC_DEL);
+    if (isFloodEntOn)    tap_code16(KC_ENT);
+    if (isFloodBspcOn)   tap_code16(KC_BSPC);
+    if (isFloodTabOn)    tap_code16(KC_TAB);
+    if (isFloodPageUpOn) tap_code16(KC_PGUP);
+    if (isFloodPageDownOn) tap_code16(KC_PGDN);
 }
 
 void matrix_scan_user(void) {
@@ -67,7 +69,9 @@ void matrix_scan_user(void) {
         || isFloodDelOn
         || isFloodEntOn
         || isFloodBspcOn
-        || isFloodTabOn) {
+        || isFloodTabOn
+        || isFloodPageUpOn
+        || isFloodPageDownOn) {
             if (timer_elapsed(floodTimerX3) > floodKeyCodeIntervalX3) {
                 dispatch_flood_keys();
                 floodTimerX3 = timer_read();
@@ -93,7 +97,9 @@ void matrix_scan_user(void) {
         || isFloodDelOn
         || isFloodEntOn
         || isFloodBspcOn
-        || isFloodTabOn) {
+        || isFloodTabOn
+        || isFloodPageUpOn
+        || isFloodPageDownOn) {
             if (timer_elapsed(floodTimerX2) > floodKeyCodeIntervalX2) {
                 dispatch_flood_keys();
                 floodTimerX2 = timer_read();
