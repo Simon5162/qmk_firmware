@@ -105,6 +105,16 @@ bool is_flood_on(void) {
         || isScrollDownOn;
 }
 
+void mouse_jump(int direction) {
+    report_mouse_t report = pointing_device_get_report();
+    for (int i = 0; i < 19; i++) {
+        report.x = 100 * direction;
+        report.y = 0;
+        pointing_device_set_report(report);
+        pointing_device_send();
+        wait_ms(5);
+    }
+}
 void layer_on_lmouse(void) {
     layer_on(LA_MOUSE);
     tap_code16(KC_SCROLL_LOCK);
@@ -562,6 +572,16 @@ bool processKeycodeIfLMouse(uint16_t keycode, keyrecord_t* record) {
                     register_code16(KC_MS_BTN1);
                     isMouseBtn1HoldStarted = true;
                 }
+            }
+            return false;
+        case MA_JMP_RIGHT:
+            if (record->event.pressed) {
+                mouse_jump(1);
+            }
+            return false;
+        case MA_JMP_LEFT:
+            if (record->event.pressed) {
+                mouse_jump(-1);
             }
             return false;
         default:

@@ -37,6 +37,8 @@ enum custom_keycodes {
     MA_MUTE_KEYS,
     MA_MS_BTN1_HOLD,
     MA_SW_BT_HST,
+    MA_JMP_RIGHT,
+    MA_JMP_LEFT,
 //    MA_CAPSE,
 //    MA_CAPSU,
 //    MA_CAPSI,
