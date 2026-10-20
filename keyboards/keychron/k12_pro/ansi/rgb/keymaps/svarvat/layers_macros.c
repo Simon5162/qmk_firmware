@@ -833,7 +833,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_LEFT:
             if (record->event.pressed) {
-                if (!isCtlWordStarted && !isFloodUpOn && !isFloodDownOn) register_code16(KC_LCTL);
+                if (isCtlWordStarted && !isFloodUpOn && !isFloodDownOn) register_code16(KC_LCTL);
                 isFloodLeftOn = true;
             } else {
                 isFloodLeftOn = false;
@@ -842,7 +842,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_RGHT:
             if (record->event.pressed) {
-                if (!isCtlWordStarted && !isFloodUpOn && !isFloodDownOn) register_code16(KC_LCTL);
+                if (isCtlWordStarted && !isFloodUpOn && !isFloodDownOn) register_code16(KC_LCTL);
                 isFloodRightOn = true;
             } else {
                 isFloodRightOn = false;
