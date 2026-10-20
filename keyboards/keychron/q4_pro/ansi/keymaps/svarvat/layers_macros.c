@@ -6,6 +6,7 @@ bool editModeLThumbStrongStarted = false;
 bool isCtlTabStarted = false;
 bool isAltTabStarted = false;
 bool isSftTabStarted = false;
+bool isCtlWordStarted = false;
 bool isCapswordStarted = false;
 bool isScrollLeftOn = false;
 bool isScrollRightOn = false;
@@ -56,6 +57,14 @@ void keyboard_post_init_user(void) {
     }
 }
 
+void switch_ctl_word_on(void) {
+    isCtlWordStarted = true;
+    register_code16(KC_LCTL);
+}
+void switch_ctl_word_off(void) {
+    unregister_code16(KC_LCTL);
+    isCtlWordStarted = false;
+}
 void switch_flood_off(void) {
     isFloodUpOn = false;
     isFloodDownOn = false;
@@ -592,6 +601,7 @@ bool processKeycodeIfLPinky(uint16_t keycode, keyrecord_t* record) {
     switch (keycode) {
         case MA_LPINKY:
             if (!(record->event.pressed)) {
+                if (isCtlWordStarted) switch_ctl_word_off();
                 layer_off(LA_LPINKY);
             }
             return false;
@@ -811,47 +821,53 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
             return false;
         case KC_UP:
             if (record->event.pressed) {
-                if (IS_LAYER_ON(LA_LPINKY)) {
+                if (isCtlWordStarted) {
                     unregister_code16(KC_LCTL);
                 }
                 isFloodUpOn = true;
             } else {
                 isFloodUpOn = false;
+                if (isCtlWordStarted) {
+                    register_code16(KC_LCTL);
+                }
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_DOWN:
             if (record->event.pressed) {
-                if (IS_LAYER_ON(LA_LPINKY)) {
+                if (isCtlWordStarted) {
                     unregister_code16(KC_LCTL);
                 }
                 isFloodDownOn = true;
             } else {
                 isFloodDownOn = false;
+                if (isCtlWordStarted) {
+                    register_code16(KC_LCTL);
+                }
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_LEFT:
             if (record->event.pressed) {
-                if (IS_LAYER_ON(LA_LPINKY) && !isFloodUpOn && !isFloodDownOn) {
-                    register_code16(KC_LCTL);
+                if (!isCtlWordStarted && !isFloodUpOn && !isFloodDownOn) {
+                    switch_ctl_word_on();
                 }
                 isFloodLeftOn = true;
             } else {
                 isFloodLeftOn = false;
-                if (IS_LAYER_ON(LA_LPINKY)) {
-                    unregister_code16(KC_LCTL);
+                if (isCtlWordStarted) {
+                    switch_ctl_word_off();
                 }
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_RGHT:
             if (record->event.pressed) {
-                if (IS_LAYER_ON(LA_LPINKY) && !isFloodUpOn && !isFloodDownOn) {
-                    register_code16(KC_LCTL);
+                if (!isCtlWordStarted && !isFloodUpOn && !isFloodDownOn) {
+                    switch_ctl_word_on();
                 }
                 isFloodRightOn = true;
             } else {
                 isFloodRightOn = false;
-                if (IS_LAYER_ON(LA_LPINKY)) {
-                    unregister_code16(KC_LCTL);
+                if (isCtlWordStarted) {
+                    switch_ctl_word_off();
                 }
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
