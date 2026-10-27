@@ -837,7 +837,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 isFloodLeftOn = true;
             } else {
                 isFloodLeftOn = false;
-                if (isCtlWordStarted && !isFloodRightOn) unregister_code16(KC_LCTL);
+                if (isCtlWordStarted) unregister_code16(KC_LCTL);
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_RGHT:
@@ -846,7 +846,7 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 isFloodRightOn = true;
             } else {
                 isFloodRightOn = false;
-                if (isCtlWordStarted && !isFloodLeftOn) unregister_code16(KC_LCTL);
+                if (isCtlWordStarted) unregister_code16(KC_LCTL);
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_PGUP:
