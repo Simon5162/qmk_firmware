@@ -392,6 +392,9 @@ bool processKeycodeIfLBase(uint16_t keycode, keyrecord_t* record) {
                 }
             }
             return true;
+        case MA_SW_BT_HST:
+            switch_to_previous_bt(record);
+            return false;
         case MA_REBOOT:
             clear_keyboard();
             soft_reset_keyboard();
