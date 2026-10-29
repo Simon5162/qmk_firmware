@@ -816,7 +816,6 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 isFloodUpOn = true;
             } else {
                 isFloodUpOn = false;
-                if (IS_LAYER_ON(LA_LPINKY)) register_code16(KC_LCTL);
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_DOWN:
@@ -825,7 +824,6 @@ bool processKeycodeIfLThumb(uint16_t keycode, keyrecord_t* record) {
                 isFloodDownOn = true;
             } else {
                 isFloodDownOn = false;
-                if (IS_LAYER_ON(LA_LPINKY)) register_code16(KC_LCTL);
             }
             return IS_LAYER_OFF(LA_LTHUMBEMO) && IS_LAYER_OFF(LA_LTHUMBDMO);
         case KC_LEFT:
